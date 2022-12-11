@@ -1,0 +1,155 @@
+{% extends "base.html"%}
+{%block content%}
+
+    <!-- Shopping Cart Section Begin -->
+    <section class="shopping-cart spad">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8">
+                    <div class="shopping__cart__table">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Product</th>
+                                    <th>Quantity</th>
+                                    <th>Total</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+
+                            {%for key in cart_data%}
+                                <tr>
+                                    <td class="product__cart__item">
+                                        <div class="product__cart__item__pic">
+
+                                            <a href="/details/{{key}}">
+                            <img class="img-fluid" src={{url_for("static",filename="images/")}}{{cart_data[key]['image']}} width="100px" height="100px">
+                                          </a>
+
+
+                                        </div>
+                                        <div class="product__cart__item__text">
+                                            <a href="/details/{{key}}">   <h6>{{cart_data[key]['name']}}</h6></a>
+                                            <h5>${{cart_data[key]['price']}}</h5>
+                                        </div>
+                                    </td>
+
+
+                                    <td class="quantity__item">
+                                        <div class="quantity">
+                                            <div class="col"> <a href="#" id="testos{{key}}" style="text-decoration:none; color:black; font-size:30px;">-</a>
+                                                &nbsp;
+                            <a href="#" class="border">
+                            <span id="test{{key}}" class="order_numbers" style="text-decoration:none; color:black; font-size:20px;"><b>{{cart_data[key]['quantity']}}</b>&nbsp;</span></a>
+                            <a href="#" id="testing{{key}}" style="text-decoration:none; color:black; font-size:30px;">+</a> </div>
+                                        </div>
+                                    </td>
+                                    <td class="cart__price" >$<span id="price{{key}}">{{cart_data[key]['price']}}</span></td>
+                                    <td class="cart__close"><a href="/cart_item_delete/{{key}}"><i class="fa fa-close"></i></a></td>
+                                </tr>
+
+
+
+
+                            <script type="text/javascript">
+                    $(document).on('click','#testing{{key}}',function(e)
+                                   {
+                      console.log('hello');
+                      e.preventDefault();
+                      spanvalue = $("#test{{key}}").text()
+                      total_price = $("#total_price").text()
+                      prod_price = $("#price{{key}}").text()
+                      $.ajax({
+                        type:'POST',
+                        url:'/cart+',
+                        data:{
+                          item_value:spanvalue,
+                          price:total_price,
+                          product_id:{{key}},
+                          prod_price:prod_price
+                        },
+                        success:function(data)
+                        {
+                            $("#price{{key}}").html(data['prod_p'])
+                            $("#test{{key}}").html(data['val']);
+                            $("#total_price").html(data['total_price'])
+                            $("#grand_total").html(data['grand_total'])
+
+                        }
+                      })
+                    });
+
+
+
+                    $(document).on('click','#testos{{key}}',function(e)
+                                   {
+                      console.log('hello');
+                      e.preventDefault();
+                      spanvalue = $("#test{{key}}").text()
+                      total_price = $("#total_price").text()
+                      prod_price = $("#price{{key}}").text()
+                      $.ajax({
+                        type:'POST',
+                        url:'/cart-',
+                        data:{
+                          item_value:spanvalue,
+                          price:total_price,
+                          product_id:{{key}},
+                          prod_price:prod_price
+                        },
+                        success:function(data)
+                        {
+                            $("#price{{key}}").html(data['prod_p'])
+                            $("#test{{key}}").html(data['val']);
+                            $("#total_price").html(data['total_price'])
+                            $("#grand_total").html(data['grand_total'])
+
+                        }
+                      })
+                    });
+
+
+
+
+                    </Script>
+
+                                {%endfor%}
+                                
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-6 col-md-6 col-sm-6">
+                            <div class="continue__btn">
+                                <a href="#">Continue Shopping</a>
+                            </div>
+                        </div>
+                        <div class="col-lg-6 col-md-6 col-sm-6">
+                            <div class="continue__btn update__btn">
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="cart__discount">
+
+
+                    </div>
+                    <div class="cart__total">
+                        <h6>Cart total</h6>
+                        <ul>
+                            <li></li>
+                            <li>Total $<span id="total_price">{{total_price}}</span></li>
+                        </ul>
+                        <a href="/checkout" class="primary-btn">Proceed to checkout</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Shopping Cart Section End -->
+
+    {%endblock%}
+    

@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<input type="file" id="file" name="" onchange="something(this.value)">
+<input id="somethinghere" class="uploadarea">
+<span class="button">Browse</span>
+
+<script>
+function something(val) {
+    document.getElementById('somethinghere').value = val;
+}
+</script>
+
+</body>
+</html>
