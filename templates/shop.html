@@ -26,8 +26,8 @@
                 <div class="col-lg-3">
                     <div class="shop__sidebar">
                         <div class="shop__sidebar__search">
-                            <form action="#">
-                                <input type="text" placeholder="Search...">
+                            <form action="/search" method="post">
+                                <input type="text" name="search" placeholder="Search...">
                                 <button type="submit"><span class="icon_search"></span></button>
                             </form>
                         </div>
@@ -88,12 +88,56 @@
                                         <div class="card-body">
                                             <div class="shop__sidebar__price">
                                                 <ul>
-<!--                                                    <li><a href="#">$0.00 - $50.00</a></li>-->
-<!--                                                    <li><a href="#">$50.00 - $100.00</a></li>-->
-<!--                                                    <li><a href="#">$100.00 - $150.00</a></li>-->
-<!--                                                    <li><a href="#">$150.00 - $200.00</a></li>-->
-<!--                                                    <li><a href="#">$200.00 - $250.00</a></li>-->
-<!--                                                    <li><a href="#">250.00+</a></li>-->
+                                                    {%if cat == "Plushies"%}
+                                                    {%if sub_cat == "Blue"%}
+                                                    <li style="color:white; background-color:black;"> <a href="/sub_cat/Plushies/Blue">Blue</a></li>
+                                                    {%else%}
+                                                    <li> <a href="/sub_cat/Plushies/Blue">Blue</a></li>
+                                                    {%endif%}
+
+                                                    {%if sub_cat == "Purple" %}
+                                                    <li style="color:white; background-color:black;"> <a href="/sub_cat/Plushies/Purple">Purple</a></li>
+                                                    {%else%}
+                                                    <li> <a href="/sub_cat/Plushies/Purple">Purple</a></li>
+                                                    {%endif%}
+
+                                                    {%if sub_cat == "Black"%}
+                                                    <li style="color:white; background-color:black;"> <a href="/sub_cat/Plushies/Black">black </a></li>
+                                                    {%else%}
+                                                    <li> <a href="/sub_cat/Plushies/Black">black </a></li>
+                                                    {%endif%}
+                                                    {%endif%}
+
+                                                    {%if cat == "Handmade"%}
+
+                                                    {%if sub_cat == "Crochet"%}
+                                                    <li style="color:white; background-color:black;"> <a href="/sub_cat/Handmade/Crochet">Crochet</a></li>
+                                                    {%else%}
+                                                    <li> <a href="/sub_cat/Handmade/Crochet">Crochet</a></li>
+                                                    {%endif%}
+                                                    {%if sub_cat == "Clay"%}
+                                                    <li style="color:white; background-color:black;"> <a href="/sub_cat/Handmade/Clay"> Clay </a></li>
+                                                    {%else%}
+                                                    <li> <a href="/sub_cat/Handmade/Clay"> Clay </a></li>
+                                                    {%endif%}
+                                                    {%endif%}
+
+
+                                                    {%if cat == "Swag"%}
+
+                                                    {%if sub_cat == "Shirts"%}
+                                                    <li style="color:white; background-color:black;"> <a href="/sub_cat/Swag/Shirts"> Shirts </a></li>
+                                                    {%else%}
+                                                    <li> <a href="/sub_cat/Swag/Shirts"> Shirts </a></li>
+                                                    {%endif%}
+
+                                                    {%if sub_cat == "Hats"%}
+                                                    <li style="color:white; background-color:black;"> <a href="/sub_cat/Swag/Hats"> Hats </a></li>
+                                                    {%else%}
+                                                    <li> <a href="/sub_cat/Swag/Hats"> Hats </a></li>
+                                                    {%endif%}
+                                                    {%endif%}
+
                                                 </ul>
                                             </div>
                                         </div>
@@ -217,7 +261,9 @@
                     </div>
                     <div class="row">
 
-
+    {%if not product.items%}
+                        <h4 style="background-color:#c2fabb">Sorry! no result found</h4>
+                        {%else%}
      {%for products in product.items%}
 
                 <div class="col-sm-3" style="padding:2%;">
@@ -295,6 +341,7 @@
        </script>
 
                 {%endfor%}
+                        {%endif%}
 
                         <!-- <div class="col-lg-4 col-md-6 col-sm-6">
                             <div class="product__item sale">

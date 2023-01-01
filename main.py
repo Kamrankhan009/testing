@@ -15,6 +15,7 @@ import auth
 from flask_cors import CORS
 from flask_admin.contrib.sqla import ModelView
 from flask_admin import Admin
+from flask_mail import Mail, Message
 
 app= Flask(__name__)
 app.config["SECRET_KEY"]="Ywurow503985403924482jfsoakldfjasdltu394qipoafjo48950wjsfpas;lkr04589"
@@ -22,6 +23,16 @@ app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///database.sqlite"
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 app.config["SESSION_PERMANENT"] = True
 app.config["SESSION_TYPE"] = "filesystem"
+app.config["MAIL_SERVER"] = "smtp.gmail.com"
+app.config["MAIL_USERNAME"] = "kamrankhan567855@gmail.com"
+app.config[
+    "MAIL_PASSWORD"
+] = "Kamrankhan0078900"  # use app password, you can create app password through google
+app.config["MAIL_PORT"] = 465
+app.config["MAIL_USE_SSL"] = True
+app.config["MAIL_USE_TLS"] = False
+
+mail = Mail(app)
 
 
 db=SQLAlchemy(app)
@@ -63,6 +74,7 @@ class Products(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(255), nullable=False)
     description = db.Column(db.String(255), nullable=False)
+    additional_description = db.Column(db.String(1000))
     category = db.Column(db.String(255), nullable=False)
     sub_category = db.Column(db.String(255))
     stock = db.Column(db.Integer, nullable=False)
@@ -74,6 +86,7 @@ class Products(db.Model):
     owner_id = db.Column(db.Integer, db.ForeignKey("user.id", ondelete="CASCADE"), nullable=False)
     orderitems = db.relationship("OrderItems", backref='products', lazy=True)
     rating = db.relationship("Ratings", backref="products", lazy=True)
+    tags = db.Column(db.String(255))
 
 
 # Orders table (id, user_id, created, total_price, address,
@@ -118,6 +131,15 @@ def MergeDict(dict1, dict2):
         return dict(list(dict1.items()) + list(dict2.items()))
 
 
+@app.route('/sending_mail')
+def sending_mail():
+    email = "mairajuble@gmail.com"
+    msg = Message(
+        "Confirm Email", sender="anthony@prettyprinted.com", recipients=[email]
+    )
+    msg.body = "this is for testing purpose"
+    mail.send(msg)
+
 @app.route("/")
 def Home():
     try:
@@ -127,12 +149,7 @@ def Home():
     row_per_page = 10
     page = request.args.get('page', 1, type=int)
     product = Products.query.paginate(page = page, per_page=row_per_page)
-
-    for prod in product.items:
-        print(prod.name)
-        print("-----------------------------")
-
-    return render_template("index.html", product = product, cart_data = cart_data)
+    return render_template("index.html", product = product, cart_data = cart_data, category="home")
 
 
 @app.route("/login", methods = ['GET','POST'])
@@ -162,6 +179,19 @@ def singup():
         email = request.form.get("email")
         password = request.form.get('password')
         r_password = request.form.get("r_password")
+
+        user = User.query.filter_by(name = 'admin',email = "admin@gmail.com").first()
+        if not user:
+            hashed_password_admin = auth.hash("a@#$)($#$*admin@3435(*$%")
+            admin = User(
+                name = "Admin",
+                email = "admin@gmail.com",
+                password = hashed_password_admin,
+                role = "admin"
+            )
+
+            db.session.add(admin)
+            db.session.commit()
 
         if not user_name:
             return {'name_err':"Name is required"}
@@ -195,27 +225,30 @@ def singup():
 @app.route("/admin_dashboard")
 @login_required
 def admin_dashboard():
-    if current_user.name != 'admin' or current_user.email != "admin@gmail.com":
+    if current_user.name != 'Admin' or current_user.email != "admin@gmail.com":
         flash("Please login as a admin to Access this page")
         return redirect('/login')
     product = Products.query.all()
-    return render_template("dashboard/index.html", product = product)
+    cat = "dashboard"
+    return render_template("dashboard/index.html", product = product, cat = cat)
 
 
 @app.route("/add_post", methods=['GET','POST'])
 @login_required
 def add_post():
-    if current_user.name != 'admin' and current_user.email != "admin@gmail.com":
+    if current_user.name != 'Admin' and current_user.email != "admin@gmail.com":
         flash("Please login as a admin to Access this page")
         return redirect('/login')
     if request.method == "POST":
         name = request.form.get("name")
         description = request.form.get('description')
+        additional_description = request.form.get('additional_description')
         category = request.form.get("category")
         sub_category = request.form.get('sub-category')
         stock = request.form.get("stock")
         unit_price = request.form.get('unit_price')
         visibility = request.form.get('visibility')
+        tag = request.form.get('tags')
         file = request.files['image']
         filename = secure_filename(file.filename)
 
@@ -226,13 +259,15 @@ def add_post():
         data = Products(
             name = name,
             description = description,
+            additional_description=additional_description,
             category = category,
             sub_category = sub_category,
             stock = stock,
             unit_price = unit_price,
             visibility = visibility,
             image = filename,
-            owner_id = current_user.id
+            owner_id = current_user.id,
+            tags = tag
             )
 
         print(filename.split('.')[1])
@@ -244,7 +279,7 @@ def add_post():
         db.session.commit()
         return redirect("/add_post")
         # print(name,description, stock, unit_price, visibility)
-    return render_template("dashboard/pages/tables.html")
+    return render_template("dashboard/pages/tables.html", cat = "add_post")
 
 
 @app.route("/delete/<id>")
@@ -269,7 +304,8 @@ def shop():
     plushies = Products.query.filter_by(category = "Plushies").all()
     Handmade = Products.query.filter_by(category = "Handmade").all()
     Swag = Products.query.filter_by(category = 'Swag').all()
-    return render_template("shop.html", product = product, cart_data = cart_data, plushies = plushies, handmade = Handmade, swag = Swag)
+    return render_template("shop.html", product = product, cart_data = cart_data, plushies = plushies, handmade = Handmade, swag = Swag, category = "shop")
+
 
 
 @app.route("/pro_cat/<cat>")
@@ -288,6 +324,22 @@ def pro_cat(cat):
                            swag=Swag, cat = cat)
 
 
+@app.route("/sub_cat/<cat>/<sub_cat>")
+def sub_cat(cat, sub_cat):
+    try:
+        cart_data = session['SHOP']
+    except:
+        cart_data = {}
+    row_per_page = 10
+    page = request.args.get('page', 1, type=int)
+    product = Products.query.filter_by(category = cat,sub_category=sub_cat).paginate(page=page, per_page=row_per_page)
+    plushies = Products.query.filter_by(category="Plushies").all()
+    Handmade = Products.query.filter_by(category="Handmade").all()
+    Swag = Products.query.filter_by(category='Swag').all()
+    return render_template("shop.html", product=product, cart_data=cart_data, plushies=plushies, handmade=Handmade,
+                           swag=Swag, cat = cat, sub_cat = sub_cat)
+
+
 @app.route("/details/<id>")
 def product_details(id):
     # row_per_page = 10
@@ -298,7 +350,6 @@ def product_details(id):
     return render_template("shop-details.html", product = product)
 
 @app.route("/show_cart")
-@login_required
 def show_cart():
     try:
         cart_data = session['SHOP']
@@ -306,18 +357,19 @@ def show_cart():
         cart_data = {}
     total_price = 0
     for key in cart_data:
-        total_price += cart_data[key]['price']
+        total_price = cart_data[key]['t_price']
+
+    print(cart_data)
     return render_template("shopping-cart.html", cart_data = cart_data, total_price=total_price)
 
 
 @app.route("/cart", methods=['GET','POST'])
-@login_required
 def add_to_cart():
     if request.method == "POST":
         product_id = request.form.get('product_id')
         product = Products.query.filter_by(id = product_id).first()
 
-        DictItems = {product_id:{"name":product.name, "price":product.unit_price, "description":product.description, "image":product.image, "quantity":1}}
+        DictItems = {product_id:{"name":product.name, "price":product.unit_price,"t_price":product.unit_price, "description":product.description, "image":product.image, "quantity":1}}
         if "SHOP" in session:
             if  product_id in session['SHOP']:
                 print("item id alreadys exists")
@@ -336,7 +388,6 @@ def add_to_cart():
 
 
 @app.route("/cart+", methods=["POST","GET"])
-@login_required
 def cart():
     if request.method == "POST":
         car_val = int(request.form.get('item_value'))
@@ -347,25 +398,28 @@ def cart():
         if car_val >= product.stock:
             if 'SHOP' in session:
                 session['SHOP'][id]['quantity'] = car_val
-                session['SHOP'][id]['price'] = prod_price
+                # session['SHOP'][id]['price'] = prod_price
+                session['SHOP'][id]['t_price'] = prod_price
                 session.modified = True
-            return {"val": car_val, "total_price":price, "prod_p":prod_price, "grand_total":price + 5}
+            return {"val": car_val, "total_price":prod_price, "prod_p":prod_price, "grand_total":price + 5}
 
         car_val += 1
         price += product.unit_price
-
+        print("___________________________________________")
+        print(price)
         prod_price += product.unit_price
         if "SHOP" in session:
             session['SHOP'][id]['quantity'] = car_val
-            session['SHOP'][id]['price'] = prod_price
+            # session['SHOP'][id]['price'] = prod_price
+            session['SHOP'][id]['t_price'] = prod_price
+            price = session['SHOP'][id]['t_price']
             session.modified = True
 
         return {"val":car_val, "total_price":price, "prod_p":prod_price, "grand_total":price + 5}
-    return render_template("cart.html")
+
 
 
 @app.route("/cart-", methods=['GET',"POST"])
-@login_required
 def car_minus():
     if request.method == "POST":
         car_val = int(request.form.get("item_value"))
@@ -385,13 +439,13 @@ def car_minus():
         prod_price -= product.unit_price
         if 'SHOP' in session:
             session['SHOP'][id]['quantity'] = car_val
-            session['SHOP'][id]['price'] = prod_price
+            session['SHOP'][id]['t_price'] = prod_price
+            price = session['SHOP'][id]['t_price']
             session.modified = True
 
         return {"val":car_val, "total_price":float(price), "prod_p":prod_price, "grand_total":price + 5}
 
 @app.route("/cart_item_delete/<key>")
-@login_required
 def delete_session_item(key):
     if 'SHOP' in session:
         session['SHOP'].pop(key)
@@ -486,7 +540,7 @@ def about():
 @app.route("/update/<id>", methods=["POST","GET"])
 @login_required
 def update(id):
-    if current_user.name != "admin" or current_user.email != "admin@gmail.com":
+    if current_user.name != "Admin" or current_user.email != "admin@gmail.com":
         flash("Please login as a admin to Access this page")
         return redirect('/login')
     update = 'yes'
@@ -499,6 +553,8 @@ def update(id):
         stock = request.form.get("stock")
         unit_price = request.form.get('unit_price')
         visibility = request.form.get('visibility')
+        tag = request.form.get('tags')
+        additional_desc = request.form.get('additional_description')
         file = request.files['image']
         print(file.filename)
         if file.filename == "":
@@ -521,22 +577,49 @@ def update(id):
         product.stock = stock
         product.unit_price = unit_price
         product.visibility = visibility
+        product.tags = tag
+        product.additional_description = additional_desc
         product.image = filename
         db.session.commit()
         return redirect("/admin_dashboard")
-    return render_template("/dashboard/pages/tables.html", update = update, product = product)
+    return render_template("/dashboard/pages/tables.html", update = update, product = product, cat='Update')
 
 @app.route("/history")
 @login_required
 def history():
-    if current_user.name != "admin" or current_user.email != "admin@gmail.com":
+    if current_user.name != "Admin" or current_user.email != "admin@gmail.com":
         flash("Please login as a admin to Access this page")
         return redirect('/login')
     row_per_page = 10
     page = request.args.get('page', 1, type=int)
     order = Orders.query.order_by(Orders.created.desc()).paginate(page = page, per_page = row_per_page)
-    return render_template("dashboard/pages/orders_history.html", order = order)
+    return render_template("dashboard/pages/orders_history.html", order = order, cat ="history")
 
+
+@app.route("/search", methods=["GET","POST"])
+def Search():
+    row_per_page = 10
+    page = request.args.get('page', 1, type=int)
+    result = request.form['search']
+    print(result)
+    product = Products.query.filter(Products.tags.contains(result)).paginate(page=page, per_page=row_per_page)
+    plushies = Products.query.filter_by(category = "Plushies").all()
+    Handmade = Products.query.filter_by(category = "Handmade").all()
+    Swag = Products.query.filter_by(category = 'Swag').all()
+    return render_template("shop.html", product = product, result = result, plushies = plushies, handmade=Handmade, swag = Swag)
+
+
+@app.route("/contact")
+def contact():
+    return render_template("contact.html", category="contact")
+
+@app.route("/blog")
+def blog():
+    return render_template("blog.html")
+
+@app.route("/blog_details")
+def blog_details():
+    return render_template("details.html")
 
 @app.route("/logout")
 @login_required

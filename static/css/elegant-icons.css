@@ -44,12 +44,7 @@ you can use the generic selector below, but it's slower:
 .arrow_down:before {
 	content: "\22";
 }
-.arrow_left:before {
-	content: "\23";
-}
-.arrow_right:before {
-	content: "\24";
-}
+
 .arrow_left-up:before {
 	content: "\25";
 }

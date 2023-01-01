@@ -91,6 +91,9 @@
                     <input type="text" id="description" value="{{product.description}}" name="description" class="form-control border border-danger" placeholder="Product description" required="" autofocus="">
 
                     <br>
+                      <input type="text" id="description" value="{{product.additional_description}}" name="additional_description" class="form-control border border-danger" placeholder="Product description" required="" autofocus="">
+                      <br>
+                        <input type="text" id="tags" name="tags" class="form-control border border-danger" value="{{product.tags}}" placeholder="Tags, Separated by comma ," required="" autofocus="">
 
                       <select class="form-select border border-danger" id="typeOfGlass" aria-label="Default select example" name="category">
                         <option selected>{{product.category}}</option>
@@ -177,6 +180,12 @@
                       <br>
                     <input type="text" id="description" name="description" class="form-control border border-danger" placeholder="Product description" required="" autofocus="">
                         <br>
+                    <input type="text" id="additional_description" name="additional_description" class="form-control border border-danger" placeholder="Additional Product description" required="" autofocus="">
+                    <br>
+                      <input type="text" id="tags" name="tags" class="form-control border border-danger" placeholder="Tags, Separated by comma ," required="" autofocus="">
+                    <br>
+
+
                     <!-- id, name, description, category, stock,
 created, modified, unit_price, visibility [true, false] -->
 
