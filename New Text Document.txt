@@ -1,0 +1,6 @@
+email = admin@gmail.com
+password = a@#$)($#$*admin@3435(*$%
+
+
+login as admin please use the above details, with admin login you will be able to see dashboard activity
+
