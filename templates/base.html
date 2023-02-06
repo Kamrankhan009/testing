@@ -67,7 +67,7 @@
                 </div>
                 <div class="col-lg-6 col-md-6">
                     <nav class="header__menu mobile-menu">
-                        <ul>
+                        <ul >
                             {%if category == "home" %}
                             <li class="active"><a href="{{url_for('Home')}}">Home</a></li>
                             {%else%}
@@ -81,12 +81,30 @@
                             {%endif%}
 
 
-                            {%if category == "contact" %}
-                            <li class="active"><a href="{{url_for('contact')}}">Contacts</a></li>
-
+                            {%if category == "gallery"%}
+                            <li class="active"><a href="{{url_for('gallery')}}">Gallery</a></li>
                             {%else%}
-                            <li><a href="{{url_for('contact')}}">Contacts</a></li>
+                            <li><a href="{{url_for('gallery')}}">Gallery</a></li>
                             {%endif%}
+
+
+                            {%if category == "guide"%}
+                            <li class="active"><a href="{{url_for('Care_guide')}}">Care Guide</a></li>
+                            {%else%}
+                            <li><a href="{{url_for('Care_guide')}}">Care Guide</a></li>
+                            {%endif%}
+
+
+                            {%if category == "glossary"%}
+                            <li class="active"><a href="{{url_for('Glossary')}}">Glossary</a></li>
+                            {%else%}
+                            <li><a href="{{url_for('Glossary')}}">Glossary</a></li>
+                            {%endif%}
+
+
+
+
+
                         </ul>
                     </nav>
                 </div>

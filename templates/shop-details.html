@@ -19,23 +19,23 @@
 
                 <div class="lightbox">
   <div class="row">
-<!--    <div class="col-lg-6">-->
-<!--      <img-->
-<!--        src="{{url_for("static", filename="images/")}}{{product.image}}"-->
-
-<!--        alt="Table Full of Spices"-->
-<!--        class="w-100 mb-2 mb-md-4 shadow-1-strong rounded"-->
-<!--      />-->
-<!--      <img-->
-<!--        src="{{url_for("static", filename="images/")}}{{product.image}}"-->
-
-<!--        alt="Coconut with Strawberries"-->
-<!--        class="w-100 shadow-1-strong rounded"-->
-<!--      />-->
-<!--    </div>-->
-    <div class="col-lg-12">
+    <div class="col-lg-6">
       <img
         src="{{url_for("static", filename="images/")}}{{product.image}}"
+
+        alt="Table Full of Spices"
+        class="w-100 mb-2 mb-md-4 shadow-1-strong rounded"
+      />
+      <img
+        src="{{url_for("static", filename="images/")}}{{product.image2}}"
+
+        alt="Coconut with Strawberries"
+        class="w-100 shadow-1-strong rounded"
+      />
+    </div>
+    <div class="col-lg-6">
+      <img
+        src="{{url_for("static", filename="images/")}}{{product.image3}}"
         alt="Dark Roast Iced Coffee"
         class="w-100 shadow-1-strong rounded"
       />
@@ -153,7 +153,7 @@
                                         <p class="note">{{product.name}}</p>
                                         <div class="product__details__tab__content__item">
                                             <h5>Products Infomation</h5>
-                                            <p>{{product.description}}</p>
+                                            <p>{{product.additional_description}}</p>
                                         </div>
                                         <div class="product__details__tab__content__item">
 

@@ -450,7 +450,7 @@ ol {
 	font-size: 18px;
 	color: #111111;
 	display: block;
-	font-weight: 600;
+	font-weight: 100;
 	position: relative;
 	padding: 3px 0;
 }
@@ -3499,7 +3499,7 @@ ol {
 		padding: 7px 0;
 		margin: 0;
 		color: #111111;
-		font-weight: 600;
+		font-weight: 100;
 	}
 	.slicknav_nav .slicknav_arrow {
 		color: #111111;

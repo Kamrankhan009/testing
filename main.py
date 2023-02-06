@@ -24,7 +24,6 @@ import auth
 from flask_cors import CORS
 from flask_admin.contrib.sqla import ModelView
 from flask_admin import Admin
-from flask_mail import Mail, Message
 
 app = Flask(__name__)
 app.config[
@@ -34,16 +33,8 @@ app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///database.sqlite"
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 app.config["SESSION_PERMANENT"] = True
 app.config["SESSION_TYPE"] = "filesystem"
-app.config["MAIL_SERVER"] = "smtp.gmail.com"
-app.config["MAIL_USERNAME"] = "kamrankhan567855@gmail.com"
-app.config[
-    "MAIL_PASSWORD"
-] = "Kamrankhan0078900"  # use app password, you can create app password through google
-app.config["MAIL_PORT"] = 465
-app.config["MAIL_USE_SSL"] = True
-app.config["MAIL_USE_TLS"] = False
 
-mail = Mail(app)
+
 
 
 db = SQLAlchemy(app)
@@ -100,6 +91,8 @@ class Products(db.Model):
     unit_price = db.Column(db.Integer, nullable=False)
     visibility = db.Column(db.Boolean(), default=1)
     image = db.Column(db.String(255))
+    image2= db.Column(db.String(255))
+    image3 = db.Column(db.String(255))
     created = db.Column(db.TIMESTAMP(), server_default=func.now())
     modified = db.Column(
         db.TIMESTAMP(), server_default=func.now(), onupdate=func.current_timestamp()
@@ -280,7 +273,12 @@ def add_post():
         visibility = request.form.get("visibility")
         tag = request.form.get("tags")
         file = request.files["image"]
+        file2 = request.files['image2']
+        file3 = request.files['image3']
+
         filename = secure_filename(file.filename)
+        filename2 = secure_filename(file2.filename)
+        filename3 = secure_filename(file3.filename)
 
         if category == "Axolotls":
             size = request.form.get("size")
@@ -328,17 +326,22 @@ def add_post():
                 unit_price=unit_price,
                 visibility=visibility,
                 image=filename,
+                image2 = filename2,
+                image3 = filename3,
                 owner_id=current_user.id,
                 tags=tag,
             )
 
             print(filename.split(".")[1])
             if str(filename.split(".")[1]) not in Allowed:
-                flash(
-                    "Our website does not support that type of extension, Please update your Product Image"
-                )
+                pass
+                # flash(
+                #     "Our website does not support that type of extension, Please update your Product Image"
+                # )
             file.save(os.path.join(Upload_dir, filename))
             print(file)
+            file2.save(os.path.join(Upload_dir, filename2))
+            file3.save(os.path.join(Upload_dir, filename3))
             db.session.add(data)
             db.session.commit()
             return redirect("/add_post")
@@ -854,6 +857,19 @@ def Search():
         swag=Swag,
     )
 
+
+@app.route("/gallery")
+def gallery():
+    return render_template("gallery.html", category="gallery")
+
+
+@app.route("/care_guide")
+def Care_guide():
+    return render_template("care_guide.html", category="guide")
+
+@app.route("/glossary")
+def Glossary():
+    return render_template("glossary.html")
 
 @app.route("/contact")
 def contact():
