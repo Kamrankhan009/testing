@@ -82,6 +82,21 @@
         </li>
 
 
+        <li class="nav-item">
+
+
+          {%if cat == "reset" %}
+          <a class="nav-link text-white active bg-gradient-primary" href="/admin_password_reset">
+            {%else%}
+            <a class="nav-link text-white" href="/admin_password_reset">
+            {%endif%}
+            <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+              <i class="material-icons opacity-10">table_view</i>
+            </div>
+            <span class="nav-link-text ms-1">Password reset</span>
+          </a>
+        </li>
+
 
 
 

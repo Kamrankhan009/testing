@@ -1,0 +1,156 @@
+<html>
+<head>
+    <style>
+
+    </style>
+
+      <!-- Basic -->
+      <meta charset="utf-8" />
+      <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+      <!-- Mobile Metas -->
+      <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+      <!-- Site Metas -->
+      <meta name="keywords" content="" />
+      <meta name="description" content="" />
+      <meta name="author" content="" />
+      <link rel="shortcut icon" href={{url_for("static",filename="images/favicon.png")}} type="">
+      <title>online shop</title>
+      <!-- bootstrap core css -->
+      <link rel="stylesheet" type="text/css" href={{url_for("static",filename="css/bootstrap.css")}} />
+      <!-- font awesome style -->
+      <link href={{url_for("static",filename="css/font-awesome.min.css")}} rel="stylesheet" />
+      <!-- Custom styles for this template -->
+      <link href={{url_for("static",filename="css/style.css")}} rel="stylesheet" />
+      <!-- responsive style -->
+      <link href={{url_for("static",filename="css/responsive.css")}} rel="stylesheet" />
+      <script src="https://code.jquery.com/jquery-3.5.1.js"
+      integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc="
+      crossorigin="anonymous"></script>
+</head>
+<body>
+
+    
+<section class="vh-100 bg-image"
+style="background-color: rgb(216, 206, 206);">
+<div class="mask d-flex align-items-center h-100 ">
+  <div class="container h-100">
+    <div class="row d-flex justify-content-center align-items-center h-100">
+      <div class="col-12 col-md-9 col-lg-7 col-xl-6">
+        <div class="card" style="border-radius: 15px;">
+          <div class="card-body p-5">
+            <h2 class="text-uppercase text-center mb-5">Create an account</h2>
+
+            <form method="post" id="todo-form">
+
+                <div id="testing" style="color: red;"></div>
+              <div class="form-outline mb-4">
+                <div id="name_error" style="color: red;"></div>
+                <input type="text" id="name" class="form-control form-control-lg" name="name" />
+                <label class="form-label" for="name">Your Name</label>
+              </div>
+
+              <div id="E_error" style="color: red;"></div>
+              <div class="form-outline mb-4">
+                <input type="email" id="email" name="email" class="form-control form-control-lg" />
+                <label class="form-label" for="email">Your Email</label>
+              </div>
+
+
+              <div class="form-outline mb-4">
+                <input type="password" name="password" id="password" class="form-control form-control-lg" />
+                <label class="form-label" for="password">Password</label>
+              </div>
+
+              <div id="pass_err" style="color: red;"></div>
+
+              <div class="form-outline mb-4">
+                <input type="password" name="r_password" id="r_password" class="form-control form-control-lg" />
+                <label class="form-label" for="r_password">Repeat your password</label>
+              </div>
+         
+
+
+              <br>
+
+              <div class="d-flex justify-content-center">
+                <button 
+                style="background-color: rgb(226, 13, 13);" type="submit"  class="btn btn-block btn-lg  text-body">Register</button>
+              </div>
+
+              
+
+              <p class="text-center text-muted mt-5 mb-0">Have already an account? <a href="/login"
+                  class="fw-bold text-body"><u>Login here</u></a></p>
+
+            </form>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</section>
+
+
+
+
+<script type="text/javascript">
+    $(document).on('submit','#todo-form',function(e)
+                   {
+      e.preventDefault();
+      role=$('#role').find(":selected").text();
+      type=$('#type').find(":selected").text();
+      $.ajax({
+        type:'POST',
+        url:'/signup',
+        data:{
+          user_name:$("#name").val(),
+          email:$("#email").val(),
+          password:$("#password").val(),
+          r_password:$("#r_password").val(),
+          roles: role,
+          type:type
+        },
+        success:function(data)
+        {
+
+           if (data['name_err']){
+           $("#name_error").html(data['name_err'])
+           }
+
+
+            if (data['msg'] == 'created'){
+            window.location.replace("/login")
+             }
+
+        
+            if (data['password'] != ""){
+                $("#pass_err").html(data['password'])
+            }
+
+
+            if (data['email'] != ""){
+              $("#E_error").html(data['email'])
+            }
+
+            if (data['user'] != ""){
+              $("#testing").html(data['user'])
+            }
+
+        // $(this).closest('form').find("input[type=password]").val("");
+        $("input[name=password]").val('');
+        $("input[name=r_password]").val('');
+        //   alert(data['data']);
+       
+      
+        }
+      })
+    });
+
+    
+  </script>
+
+
+</body>
+</html>

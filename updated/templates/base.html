@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="zxx">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="description" content="lotl-squald">
+    <meta name="keywords" content="Male_Fashion, unica, creative, html">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Lotl Squad</title>
+     <script src="https://code.jquery.com/jquery-3.5.1.js"
+      integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc="
+      crossorigin="anonymous"></script>
+
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+    <!-- Google Font -->
+    <script src="https://use.fontawesome.com/cf719f4fe9.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@300;400;600;700;800;900&display=swap"
+    rel="stylesheet">
+
+    <!-- Css Styles -->
+    <link rel="stylesheet" href={{url_for("static", filename="css/bootstrap.min.css")}} type="text/css">
+    <link rel="stylesheet" href={{url_for("static", filename="css/font-awesome.min.css")}} type="text/css">
+    <link rel="stylesheet" href={{url_for("static", filename="css/elegant-icons.css")}} type="text/css">
+    <link rel="stylesheet" href={{url_for("static", filename="css/magnific-popup.css")}} type="text/css">
+    <link rel="stylesheet" href={{url_for("static", filename="css/nice-select.css")}} type="text/css">
+    <link rel="stylesheet" href={{url_for("static", filename="css/owl.carousel.min.css")}} type="text/css">
+    <link rel="stylesheet" href={{url_for("static", filename="css/slicknav.min.css")}} type="text/css">
+    <link rel="stylesheet" href={{url_for("static", filename="css/style.css")}} type="text/css">
+    <link rel="stylesheet" href={{url_for("static", filename="css/cardss.css")}} type="text/css">
+</head>
+
+<body>
+
+    <div id="preloder">
+        <div class="loader"></div>
+    </div>
+
+
+
+
+    <!-- Offcanvas Menu Begin -->
+    <div class="offcanvas-menu-overlay"></div>
+    <div class="offcanvas-menu-wrapper">
+       
+        <div class="offcanvas__nav__option">
+            <a href="#" class="search-switch"><img src={{url_for("static", filename="img/icon/search.png")}} alt=""></a>
+            <a href="{{url_for('show_cart')}}"><i class="fa fa-shopping-cart"></i></a>
+        </div>
+        <div id="mobile-menu-wrap"></div>
+        
+    </div>
+    <!-- Offcanvas Menu End -->
+
+    <!-- Header Section Begin -->
+    <header class="header">
+
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-3 col-md-3">
+                    <div class="header__logo">
+                        <a href="{{url_for("Home")}}"><img src={{url_for("static", filename="img/images/lotl_squad_black_on_clear.png")}} alt="" height="50px"></a>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-6">
+                    <nav class="header__menu mobile-menu">
+                        <ul >
+                            {%if category == "home" %}
+                            <li class="active"><a href="{{url_for('Home')}}">Home</a></li>
+                            {%else%}
+                            <li ><a href="{{url_for('Home')}}">Home</a></li>
+                            {%endif%}
+
+                            {%if category == "shop"%}
+                            <li class="active"><a href="{{url_for('shop')}}">Shop</a></li>
+                            {%else%}
+                            <li><a href="{{url_for('shop')}}">Shop</a></li>
+                            {%endif%}
+
+
+                            {%if category == "gallery"%}
+                            <li class="active"><a href="{{url_for('gallery')}}">Gallery</a></li>
+                            {%else%}
+                            <li><a href="{{url_for('gallery')}}">Gallery</a></li>
+                            {%endif%}
+
+
+                            {%if category == "guide"%}
+                            <li class="active"><a href="{{url_for('Care_guide')}}">Care Guide</a></li>
+                            {%else%}
+                            <li><a href="{{url_for('Care_guide')}}">Care Guide</a></li>
+                            {%endif%}
+
+
+                            {%if category == "glossary"%}
+                            <li class="active"><a href="{{url_for('Glossary')}}">Glossary</a></li>
+                            {%else%}
+                            <li><a href="{{url_for('Glossary')}}">Glossary</a></li>
+                            {%endif%}
+
+
+
+
+
+                        </ul>
+                    </nav>
+                </div>
+                <div class="col-lg-3 col-md-3">
+                    <div class="header__nav__option">
+                        <a href="#" class="search-switch"><img src={{url_for("static", filename="img/icon/search.png")}} alt=""></a>
+
+                        <a href="{{url_for('show_cart')}}"><img src={{url_for("static", filename="img/icon/cart.png")}} alt=""> <span id='lblCartCount'>{{cart_data|length}}</span></a>
+
+                        {%if current_user.is_authenticated%}
+                        {% if current_user.name =='Admin' and current_user.email == "admin@gmail.com" %}
+                        <a href="/logout" style="color:black; hover:black;">logout</a>
+                        <a href="{{url_for('admin_dashboard')}}" style="color:black; hover:black;">Dashboard</a>
+                        {%else%}
+                        <a href="/logout" style="color:black; hover:black;">logout</a>
+                        {%endif%}
+                        {%else%}
+                         <a href="{{url_for('login')}}" style="color:black; hover:black;">login</a>
+                        {%endif%}
+                    </div>
+                </div>
+            </div>
+            <div class="canvas__open"><i class="fa fa-bars"></i></div>
+        </div>
+    </header>
+    <!-- Header Section End -->
+
+
+    {%block content%}
+
+
+    {%endblock%}
+
+     <!-- Footer Section Begin -->
+     <footer class="footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-3 col-md-6 col-sm-6">
+                    <div class="footer__about">
+                        <div class="footer__logo">
+                            <a href="#"><img src={{url_for("static", filename="img/images/lotl_squad_mini_logo.png")}} alt="" height="50px"></a>
+                        </div>
+                        <p>The customer is at the heart of our unique business model, which includes design.</p>
+
+
+<!-- Facebook -->
+<a class="btn btn-primary" style="background-color: #3b5998;" href="#!" role="button"
+  ><i class="fa fa-facebook-official"></i
+></a>
+
+<!-- Twitter -->
+<a class="btn btn-primary" style="background-color: #55acee;" href="#!" role="button"
+  ><i class="fa fa-twitter"></i
+></a>
+
+<!-- Google -->
+<a class="btn btn-primary" style="background-color: #dd4b39;" href="#!" role="button"
+  ><i class="fa fa-google"></i
+></a>
+
+<!-- Instagram -->
+<a class="btn btn-primary" style="background-color: #ac2bac;" href="#!" role="button"
+  ><i class="fa fa-instagram"></i
+></a>
+
+
+
+<!-- Whatsapp -->
+<a class="btn btn-primary" style="background-color: #25d366;" href="#!" role="button"
+  ><i class="fa fa-whatsapp"></i
+></a>
+
+                    </div>
+                </div>
+                <div class="col-lg-2 offset-lg-1 col-md-3 col-sm-6">
+                    <div class="footer__widget">
+                        <h6>Shopping</h6>
+                        <ul>
+                            <li><a href="{{url_for('shop')}}">Store</a></li>
+                            <li><a href="{{url_for('shop')}}">Trending Item</a></li>
+                            <li><a href="{{url_for('shop')}}">Accessories</a></li>
+
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-lg-2 col-md-3 col-sm-6">
+                    <div class="footer__widget">
+                        <h6>Shopping</h6>
+                        <ul>
+                            <li><a href="{{url_for('contact')}}">Contact Us</a></li>
+                            <li><a href="#">Delivary</a></li>
+                            <li><a href="#">Return & Exchanges</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-lg-3 offset-lg-1 col-md-6 col-sm-6">
+                    <div class="footer__widget">
+                        <h6>NewLetter</h6>
+                        <div class="footer__newslatter">
+                            <p>Be the first to know about new arrivals, look books, sales & promos!</p>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+
+
+    </footer>
+    <!-- Footer Section End -->
+
+    <!-- Search Begin -->
+    <div class="search-model">
+        <div class="h-100 d-flex align-items-center justify-content-center">
+            <div class="search-close-switch">+</div>
+            <form class="search-model-form" action="/search" method="post">
+                <input type="text" id="search-input"  name="search" placeholder="Search here.....">
+            </form>
+        </div>
+    </div>
+    <!-- Search End -->
+
+    <!-- Js Plugins -->
+
+    <script src={{url_for("static", filename="js/jquery-3.3.1.min.js")}}></script>
+    <script src={{url_for("static", filename="js/bootstrap.min.js")}}></script>
+    <script src={{url_for("static", filename="js/jquery.nice-select.min.js")}}></script>
+    <script src={{url_for("static", filename="js/jquery.nicescroll.min.js")}}></script>
+    <script src={{url_for("static", filename="js/jquery.magnific-popup.min.js")}}></script>
+    <script src={{url_for("static", filename="js/jquery.countdown.min.js")}}></script>
+    <script src={{url_for("static", filename="js/jquery.slicknav.js")}}></script>
+    <!-- <script src={{url_for("static", filename="js/mixitup.min.js")}}></script> -->
+    <script src={{url_for("static", filename="js/owl.carousel.min.js")}}></script>
+    <script src={{url_for("static", filename="js/main.js")}}></script>
+<script src="https://use.fontawesome.com/cf719f4fe9.js"></script>
+</body>
+
+</html>

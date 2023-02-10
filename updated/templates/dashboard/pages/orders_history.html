@@ -1,0 +1,163 @@
+{%extends 'dashboard/admin_base.html' %}
+{%block content%}
+
+  <main class="main-content position-relative max-height-vh-100 h-100 border-radius-lg ">
+    <!-- Navbar -->
+    <nav class="navbar navbar-main navbar-expand-lg px-0 mx-4 shadow-none border-radius-xl" id="navbarBlur" navbar-scroll="true">
+      <div class="container-fluid py-1 px-3">
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb bg-transparent mb-0 pb-0 pt-1 px-0 me-sm-6 me-5">
+            <li class="breadcrumb-item text-sm"><a class="opacity-5 text-dark" href="javascript:;">dashboard</a></li>
+            <li class="breadcrumb-item text-sm text-dark active" aria-current="page">Create New Post</li>
+          </ol>
+
+        </nav>
+        <div class="collapse navbar-collapse mt-sm-0 mt-2 me-md-0 me-sm-4" id="navbar">
+          <div class="ms-md-auto pe-md-3 d-flex align-items-center">
+            <div class="input-group input-group-outline">
+
+            </div>
+          </div>
+          <ul class="navbar-nav  justify-content-end">
+
+            <li class="nav-item d-flex align-items-center">
+
+              {%if current_user.is_authenticated%}
+              <a href="/logout" class="nav-link text-body font-weight-bold px-0">
+                <i class="fa fa-user me-sm-1"></i>
+                <span class="d-sm-inline d-none">Sign Out</span>
+              </a>
+
+               {%else%}
+
+              <a href="/login" class="nav-link text-body font-weight-bold px-0">
+                <i class="fa fa-user me-sm-1"></i>
+                <span class="d-sm-inline d-none">Sign In</span>
+              </a>
+              {%endif%}
+
+            </li>
+            <li class="nav-item d-xl-none ps-3 d-flex align-items-center">
+              <a href="javascript:;" class="nav-link text-body p-0" id="iconNavbarSidenav">
+                <div class="sidenav-toggler-inner">
+                  <i class="sidenav-toggler-line"></i>
+                  <i class="sidenav-toggler-line"></i>
+                  <i class="sidenav-toggler-line"></i>
+                </div>
+              </a>
+            </li>
+            <li class="nav-item px-3 d-flex align-items-center">
+              <a href="javascript:;" class="nav-link text-body p-0">
+
+              </a>
+            </li>
+            <li class="nav-item dropdown pe-2 d-flex align-items-center">
+              <a href="javascript:;" class="nav-link text-body p-0" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+
+              </a>
+
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+    <!-- End Navbar -->
+    <div class="container-fluid py-4">
+      <div class="row">
+        <div class="col-12">
+          <div class="card my-4">
+            <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
+              <div class="">
+                
+              </div>
+            </div>
+
+
+            <table class="table">
+                <thead class="thead-dark">
+                  <tr>
+                    <th scope="col">Order Id</th>
+                    <th scope="col">Order Date</th>
+                    <th scope="col">Payment Method</th>
+                    <th scope="col">Order Payment</th>
+                  </tr>
+                </thead>
+                <tbody>
+                    {%for data in order.items%}
+                  <tr>
+                    <th scope="row">{{data.id}}</th>
+                    <td>{{data.created.strftime('%Y-%m-%d')}}</td>
+                    <td>{{data.payment_method}}</td>
+                    <td>{{data.money_received}}</td>
+                  </tr>
+                  {%endfor%}
+                 
+                  
+                </tbody>
+              </table>
+              
+            
+
+
+
+
+
+              <div class="text-right">
+                <a href="{{ url_for('history', page=order.prev_num) }}"
+                   class="btn btn-outline-danger 
+                   {% if order.page == 1 %}disabled{% endif %}">
+                    &laquo;
+                </a>
+             
+             {% for page_num in order.iter_pages(left_edge=1, right_edge=1, left_current=1, right_current=2) %}
+             {% if page_num %}
+             
+                        {% if order.page == page_num %}
+                        <a href="{{ url_for('history', page=page_num) }}"
+                           class="btn btn-danger">
+                            {{ page_num }}
+                        </a>
+                        {% else %}
+                        <a href="{{ url_for('history', page=page_num) }}"
+                           class="btn btn-outline-danger">
+                            {{ page_num }}
+                        </a>
+                        {% endif %}
+                    {% else %}
+                        ...
+                    {% endif %}
+                {% endfor %}
+                <a href="{{ url_for('history', page=order.next_num) }}"
+                   class="btn btn-outline-danger 
+                   {% if order.page == order.pages %}disabled{% endif %}">
+                    &raquo;
+                </a>
+             
+             
+             <p class="text-right mt-3">
+               Showing page {{ order.page }} of {{ order.pages }}
+             </p>
+             
+             </div>
+
+
+
+
+
+
+
+
+
+
+
+           <br><br><br>
+    
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+
+ {%endblock%}

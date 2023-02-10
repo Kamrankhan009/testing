@@ -5,12 +5,8 @@
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/instance/database.sqlite" beforeDir="false" afterPath="$PROJECT_DIR$/instance/database.sqlite" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/static/css/style.css" beforeDir="false" afterPath="$PROJECT_DIR$/static/css/style.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/base.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/base.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/dashboard/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/dashboard/index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/dashboard/pages/tables.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/dashboard/pages/tables.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/shop-details.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/shop-details.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/shop.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/shop.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/dashboard/admin_base.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/dashboard/admin_base.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/login.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/login.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

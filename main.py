@@ -166,6 +166,7 @@ def Home():
         cart_data = session["SHOP"]
     except:
         cart_data = {}
+
     row_per_page = 10
     page = request.args.get("page", 1, type=int)
     product = Products.query.paginate(page=page, per_page=row_per_page)
@@ -213,6 +214,7 @@ def singup():
                 role="admin",
             )
 
+
             db.session.add(admin)
             db.session.commit()
 
@@ -243,6 +245,27 @@ def singup():
         db.session.commit()
         return {"msg": "created"}
     return render_template("signup.html")
+
+
+@app.route("/admin_password_reset", methods = ['POST','GET'])
+@login_required
+def admin_password_reset():
+    if current_user.name != "Admin" or current_user.email != "admin@gmail.com":
+        flash("Please login as a admin to Access this page")
+        return redirect("/login")
+    if request.method == "POST":
+        password = request.form.get('password')
+        current_password = request.form.get('c_password')
+        adm = User.query.filter_by(name="Admin", email="admin@gmail.com").first()
+        if auth.verify(current_password, adm.password):
+            adm.password = auth.hash(password)
+            db.session.commit()
+            flash("Admin password changed successfully")
+            return redirect("/admin_dashboard")
+        else:
+            flash("Current password is incorrect")
+            return redirect("/admin_password_reset")
+    return render_template("dashboard/pages/password_reset.html")
 
 
 @app.route("/admin_dashboard")
