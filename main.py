@@ -871,12 +871,14 @@ def Search():
     plushies = Products.query.filter_by(category="Plushies").all()
     Handmade = Products.query.filter_by(category="Handmade").all()
     Swag = Products.query.filter_by(category="Swag").all()
+    Axolotls = Products.query.filter_by(category="Axolotls").all()
     return render_template(
         "shop.html",
         product=product,
         result=result,
         plushies=plushies,
         handmade=Handmade,
+        axolotls = Axolotls,
         swag=Swag,
     )
 

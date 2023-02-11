@@ -29,12 +29,12 @@
                         <div class="shop__sidebar__search">
                             <form action="/search" method="post">
                                 <input type="text" name="search" placeholder="Search...">
-                                <button type="submit"><span class="icon_search"></span></button>
+                                <button type="submit"><i class="fa fa-search"></i></button>
                             </form>
                         </div>
                         <div class="shop__sidebar__accordion">
-                            <div class="accordion" id="accordionExample">
-                                <div class="card">
+                            <div class="accordion" id="accordionExample" >
+                                <div class="card" style="background-color:#f9faed;">
                                     <div class="card-heading">
                                         <a data-toggle="collapse" data-target="#collapseOne">Categories</a>
                                     </div>
@@ -94,7 +94,7 @@
 
 {% if cat == "Axolotls" %}
 
-                                <div class="card" id="axol" style="display:">
+                                <div class="card" id="axol" style="background-color:#f9faed;">
                                     <div class="card-heading">
 
 
@@ -301,7 +301,7 @@
 </div>
 
                                 {%else%}
-                                <div class="card">
+                                <div class="card" style="background-color:#f9faed;">
 
                                     <div class="card-heading">
                                         <a data-toggle="collapse" data-target="#collapseThree">Filter</a>
