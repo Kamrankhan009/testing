@@ -3,11 +3,58 @@
 
 
 
-<br><br><br><br><br>
-<h4 style="background-color:yellow" class="text-center">comming soon</h4>
-<br><br><br><br><br><br>
-<!--All the code need to be done here, means inside content block-->
+<div class="container">
+<!-- to be filled by the Python script -->
+<div class="row">
+  <div class="col">
+    <h1>{{ the_title }}</h1>
+  </div>
+</div>
 
+<!-- note how items from the "static" folder are linked -->
+
+  <div class="row">
+    <div class="col">
+      <div style="background-color: rgba(255,0,0,0.1);">
+        <img alt="Photo: Melanoid Leucistic Axolotl" class="img-fluid rounded" src="{{ url_for('static', filename='images/baby_two_wilds_front.png') }}">
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col">
+      <p class="credit">Two baby wilds: Attempted Macro by John</p>
+
+      <p><strong>If you have a word you'd like to add (or edit) please reach out!</strong></p>
+
+      <!-- linking to an exact spot on page was found on stackoverflow https://stackoverflow.com/questions/35843675/link-to-a-specific-location-in-a-flask-template -->
+      <section id="chinampa"><h2><span class="badge badge-secondary">Chinampa</span></h2></section>
+      <p>A floating garden; a Mesoamerican agricultural technique where crops were grown in the shallows of lake beds.</p>
+      <br>
+      <section id="impaction"><h2><span class="badge badge-secondary">Impaction</span></h2></section>
+      <p>Basically constipation, but with the risk of death. Many axolotls have been autopsied and found to be filled with rocks, large sand, and other obstructions from their environment. That is why axolotls under 6 inches should have bare bottom enclosures. Bare bottom enclosures for full sized adults are still recommended; but tile, fine sand, or rocks that are glued down are also acceptable</p>
+      <br>
+      <section id="neotenic"><h2><span class="badge badge-secondary">Neotenic</span></h2></section>
+      <p><em>The retention of juvinile characteristics in the adults of a species:</em> for axolotls this means they don't lose their gills or dorsal fins like other salamanders. They live, breed, and die, fully aquatic!</p>
+      <br>
+      <section id="morph"><h2><span class="badge badge-secondary">Morph</span></h2></section>
+      <p><em><strong>As a noun...</strong> In biology, an individual of one particular form in a species that occurs in two or more forms:</em> Perhaps the most internet-famous axolotl morph is the leucistic or white axolotl, these have white skin, pink fluffy gills, and dark eyes. Other morphs include albino (white with white eyes), Golden Albino (albinos with high iridiophore content), Melanoid or dark, Copper, Axanthic, various combinations of these. There are even chimeras and mosaics!<br>
+      <em><strong>As a verb...</strong> To undergo metamorphasis:</em> As stated earlier, this is not something that axolotls are wont to do. Captive axolotls are cross-bred with tiger salamanders (who do undergo metamorphasis) and so occasionally a pet axolotl will morph. Captive axolotls are also more likely to encounter iodine, which is used to produce thyroxin, which causes morphing. </p>
+      <br>
+      <section id="suction_feeder"><h2><span class="badge badge-secondary">Suction Feeder</span></h2></section>
+      <p><em>A creature that captures prey by generating a flow of water into a rapidly expanding mouth cavity:</em> so like kirby but faster and not for fun. The gif below is slowed down, each frame is 1/30th of a second, AND YET the worm just completely disappears from one frame to the next. That is the kind of creature we are dealing with. It is only a matter of time. Soon.</p>
+
+        <div class="row">
+            <div class="col"></div>
+            <div class="col">
+                <img alt="Photo: Melanoid Leucistic Axolotl" class="img-fluid rounded max-width=50" src="{{ url_for('static', filename='images/suction.gif') }}">
+            </div>
+            <div class="col"></div>
+        </div>
+      <br>
+
+    </div>
+  </div>
+</div>
 
 
 

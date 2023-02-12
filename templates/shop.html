@@ -518,7 +518,7 @@
 						}
 						</style>
 
-						<div class="col-md-6 col-lg-4 col-xl-3" >
+						<div class="col-md-6 col-lg-4 col-xl-3" id="testing{{products.id}}" >
 								<div id="product-{{products.id}}" class="single-product"  >
 										<div class="part-1" style="">
 <!--											<span class="discount">15% off</span>-->
@@ -549,7 +549,7 @@
 
 
 
-														<li><a href={{url_for('product_details', id="")}}{{products.id}}><i class="fa fa-expand"></i></a></li>
+														<li></li>
 												</ul>
 										</div>
 										<div class="part-2">
@@ -562,6 +562,33 @@
 
 
 					                 <script type="text/javascript">
+
+
+
+					                var elementClicked;
+$("#add_cart{{products.id}}").click(function(e){
+   elementClicked = true;
+
+
+   if( elementClicked != true ) {
+
+}else{
+
+    e.preventDefault();
+}
+});
+
+$("#testing{{products.id}}").click(function(){
+if( elementClicked != true ) {
+ $(document).on("click", '#testing{{products.id}}', function(e){
+					                 window.location.href = "/details/{{products.id}}";
+					                 });
+}else{
+    elementClicked = false;
+}
+});
+
+
          $(document).on('click','#add_cart{{products.id}}',function(e)
                         {
            e.preventDefault();

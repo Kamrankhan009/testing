@@ -325,9 +325,11 @@ h2::after {
 						}
 						</style>
 
-						<div class="col-md-6 col-lg-4 col-xl-3" >
+
+                        <div class="col-md-6 col-lg-4 col-xl-3"  >
+
 								<div id="product-{{products.id}}" class="single-product"  >
-										<div class="part-1" style="">
+										<div class="part-1" style="" id="testing{{products.id}}">
 <!--											<span class="discount">15% off</span>-->
 												<ul>
 													<li></li>
@@ -356,7 +358,7 @@ h2::after {
 
 
 
-														<li><a href={{url_for('product_details', id="")}}{{products.id}}><i class="fa fa-expand"></i></a></li>
+														<li></li>
 												</ul>
 										</div>
 										<div class="part-2">
@@ -369,6 +371,36 @@ h2::after {
 
 
 					                 <script type="text/javascript">
+
+
+
+
+var elementClicked;
+$("#add_cart{{products.id}}").click(function(e){
+   elementClicked = true;
+
+
+   if( elementClicked != true ) {
+
+}else{
+
+    e.preventDefault();
+}
+});
+
+$("#testing{{products.id}}").click(function(){
+if( elementClicked != true ) {
+ $(document).on("click", '#testing{{products.id}}', function(e){
+					                 window.location.href = "/details/{{products.id}}";
+					                 });
+}else{
+    elementClicked = false;
+}
+});
+
+
+
+
          $(document).on('click','#add_cart{{products.id}}',function(e)
                         {
            e.preventDefault();
@@ -380,18 +412,10 @@ h2::after {
              },
              success:function(data)
              {
-
-
-
                  if (data['value'] != ""){
                      $("#lblCartCount").html(data['value']);
                      $("#lblCartCount2").html(data['value']);
                  }
-
-
-
-
-
              // $(this).closest('form').find("input[type=password]").val("");
              $("input[name=password]").val('');
              $("input[name=r_password]").val('');
@@ -400,7 +424,12 @@ h2::after {
 
              }
            })
+
          });
+         console.log(elemclicked);
+         if (elemclicked = false){
+
+					                 }
        </script>
 					{%endfor%}
 

@@ -49,7 +49,18 @@
        
         <div class="offcanvas__nav__option">
             <a href="#" class="search-switch"><img src={{url_for("static", filename="img/icon/search.png")}} alt=""></a>
-            <a href="{{url_for('show_cart')}}"><i class="fa fa-shopping-cart"></i></a>
+            <a href="{{url_for('show_cart')}}"><img src={{url_for("static", filename="img/icon/cart.png")}} alt=""> <span id='lblCartCount2'>{{cart_data|length}}</span></a>
+
+                        {%if current_user.is_authenticated%}
+                        {% if current_user.name =='Admin' and current_user.email == "admin@gmail.com" %}
+                        <a href="/logout" style="color:black; hover:black;">logout</a>
+                        <a href="{{url_for('admin_dashboard')}}" style="color:black; hover:black;">Dashboard</a>
+                        {%else%}
+                        <a href="/logout" style="color:black; hover:black;">logout</a>
+                        {%endif%}
+                        {%else%}
+                         <a href="{{url_for('login')}}" style="color:black; hover:black;">login</a>
+                        {%endif%}
         </div>
         <div id="mobile-menu-wrap"></div>
         

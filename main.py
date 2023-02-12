@@ -58,7 +58,7 @@ def load_user(userid):
 
 basdir = os.path.abspath(os.path.dirname(__file__))
 Upload_dir = basdir + "/static/images/"
-Allowed = ["JPG", "jpj", "PNG", "png"]
+Allowed = ["JPG", "jpg", "PNG", "png"]
 
 
 class User(db.Model, UserMixin):
@@ -356,11 +356,14 @@ def add_post():
             )
 
             print(filename.split(".")[1])
-            if str(filename.split(".")[1]) not in Allowed:
-                pass
-                # flash(
-                #     "Our website does not support that type of extension, Please update your Product Image"
-                # )
+
+            if str(filename.split(".")[1]) not in Allowed or str(filename2.split(".")[1]) not in Allowed or str(filename3.split(".")[1]) not in Allowed :
+
+                flash(
+                    "Our website does not support that type of extension, Please update your Product Image"
+                )
+
+                return redirect("/add_post")
             file.save(os.path.join(Upload_dir, filename))
             print(file)
             file2.save(os.path.join(Upload_dir, filename2))
@@ -577,7 +580,7 @@ def show_cart():
         cart_data = {}
     total_price = 0
     for key in cart_data:
-        total_price = cart_data[key]["t_price"]
+        total_price += cart_data[key]["t_price"]
 
     print(cart_data)
     return render_template(
@@ -885,16 +888,28 @@ def Search():
 
 @app.route("/gallery")
 def gallery():
-    return render_template("gallery.html", category="gallery")
+    try:
+        cart_data = session["SHOP"]
+    except:
+        cart_data = {}
+    return render_template("gallery.html", category="gallery", cart_data= cart_data)
 
 
 @app.route("/care_guide")
 def Care_guide():
-    return render_template("care_guide.html", category="guide")
+    try:
+        cart_data = session["SHOP"]
+    except:
+        cart_data = {}
+    return render_template("care_guide.html", category="guide", cart_data = cart_data)
 
 @app.route("/glossary")
 def Glossary():
-    return render_template("glossary.html")
+    try:
+        cart_data = session["SHOP"]
+    except:
+        cart_data = {}
+    return render_template("glossary.html", cart_data= cart_data)
 
 @app.route("/contact")
 def contact():

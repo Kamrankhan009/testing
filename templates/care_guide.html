@@ -1,11 +1,43 @@
 {%extends 'base.html' %}
 {%block content%}
 
-<br><br><br><br><br>
-<h4 style="background-color:yellow" class="text-center">comming soon</h4>
-<br><br><br><br><br><br>
-<!--All the code need to be done here, means inside content block-->
 
+<div class="container">
+<!-- to be filled by the Python script -->
+<div class="row">
+  <div class="col">
+    <h1>{{ the_title }}</h1>
+  </div>
+</div>
+
+<!-- note how items from the "static" folder are linked -->
+
+  <div class="row">
+    <div class="col">
+      <div style="background-color: rgba(255,0,0,0.1);">
+        <img alt="Photo: Melanoid Leucistic Axolotl" class="img-fluid rounded" src="{{ url_for('static', filename='images/coyote_eye.jpg') }}">
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col">
+      <p class="credit">Coyote the Melanoid (het copper): Photo by John</p>
+
+      <p>How to care for your axolotl</p>
+
+      <ul>
+        <!-- note how items from routes in the the Python script are linked -->
+        <li><a href="{{ url_for('Home') }}">Lotl Squad Home</a></li>
+        <li><a href="{{ url_for('shop') }}">Axolotls For Sale</a></li>
+      </ul>
+
+      <!-- linking to an exact spot on page was found on stackoverflow https://stackoverflow.com/questions/35843675/link-to-a-specific-location-in-a-flask-template -->
+      <p>Axolotls (<em>ambystoma mexicanum</em>) are <a class="inline" href="{{ url_for('Glossary', _anchor='neotenic') }}">neotenic</a> so they stay in the water. Give them water to stay in. Don't give them too little water because they also poop in it and it will get gross and kill them.</p>
+      <p>Axolotls are ambush predators and <a class="inline" href="{{ url_for('Glossary', _anchor='suction_feeder') }}">suction feeders</a>, and sometimes they suck at eating lol also they'll eat rocks n stuff which causes <a class="inline" href="{{ url_for('Glossary', _anchor='impaction') }}">impaction</a> and death.</p>
+      <p>Please just like don't let them die dude come on it's really not that hard. Get a 40 gallon breeder tank (they are wider and shorter than regular 40g, axolotls like the floor) and a canister filter and a sponge filter and a clip on fan that plugs into your wall to blow on the water, and get a light you want but then also give them a place to hide from it, get a water tester kit, and get wormies, and you're set. Check water params and do water changes regularly.</p>
+    </div>
+  </div>
+</div>
 
 
 
