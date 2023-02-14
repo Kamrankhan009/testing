@@ -81,12 +81,9 @@ class Products(db.Model):
     sub_category = db.Column(db.String(255))
     sub_cat_size = db.Column(db.String(255), default="")
     sub_cat_gender = db.Column(db.String(255), default="")
-    sub_cat_homo = db.Column(db.String(255), default="")
-    sub_cat_albino = db.Column(db.String(255), default="")
-    sub_cat_melanoid = db.Column(db.String(255), default="")
-    sub_cat_leucistic = db.Column(db.String(255), default="")
-    sub_cat_wild = db.Column(db.String(255), default="")
-    sub_cat_heter = db.Column(db.String(255), default="")
+    flour = db.Column(db.String(255), default="")
+    homo = db.Column(db.String(255), default="")
+    hetero = db.Column(db.String(255), default="")
     stock = db.Column(db.Integer, nullable=False)
     unit_price = db.Column(db.Integer, nullable=False)
     visibility = db.Column(db.Boolean(), default=1)
@@ -306,26 +303,74 @@ def add_post():
         if category == "Axolotls":
             size = request.form.get("size")
             gender = request.form.get("gender")
-            homozygous = request.form.get("homozygous")
-            heterozygous = request.form.get("heterozygous")
 
-            albino = ""
-            melanoid = ""
-            leucistic = ""
-            wild = ""
-            if homozygous == "Albino":
-                albino = request.form.get("albino")
+            # to add new option for select, add same line as below, request.form.get('name comming from html file')
+            rfp= request.form.get('rfp')
+            gdp = request.form.get('gdp')
+            empty = request.form.get('none')
+            flour = ""
+            if empty:
+                rfp = None
+                gdp = None
+            else:
+                if rfp:
+                    flour += rfp + ","
 
-            if homozygous == "Melanoid":
-                melanoid = request.form.get("melanoid")
+                if gdp:
+                    flour += gdp + ","
+            #homozygous
+            leucistic = request.form.get('leucistic')
+            melanoid = request.form.get('melanoid')
+            hypomelanistic = request.form.get('hypomelanistic')
+            albino = request.form.get('albino')
+            copper = request.form.get('copper')
+            axanthic = request.form.get('axanthic')
 
-            if homozygous == "Leucistic":
-                leucistic = request.form.get("leucistic")
+            homo = ""
+            if leucistic:
+                homo +=  leucistic + ","
 
-            if homozygous == "Wild":
-                wild = request.form.get("wild")
+            if melanoid:
+                homo +=  melanoid + ","
 
+            if hypomelanistic:
+                homo +=  hypomelanistic + ","
 
+            if albino:
+                homo +=  albino + ","
+
+            if copper:
+                homo +=  copper + ","
+
+            if axanthic:
+                homo +=  axanthic + ","
+
+            #heterozygous
+            h_leucistic = request.form.get('h_leucistic')
+            h_melanoid = request.form.get('h_melanoid')
+            h_hypomelanistic = request.form.get('h_hypomelanistic')
+            h_albino = request.form.get('h_albino')
+            h_copper = request.form.get('h_copper')
+            h_axanthic = request.form.get('h_axanthic')
+
+            hetro = ""
+            if h_leucistic:
+                hetro +=  h_leucistic + ","
+
+            if h_melanoid:
+                hetro +=  h_melanoid + ","
+
+            if h_hypomelanistic:
+                hetro +=  h_hypomelanistic + ","
+
+            if h_albino:
+                hetro +=  h_albino + ","
+
+            if h_copper:
+                hetro +=  h_copper + ","
+
+            if h_axanthic:
+                hetro +=  h_axanthic + ","
 
             if visibility.lower() == "true":
                 visibility = 1
@@ -339,12 +384,9 @@ def add_post():
                 sub_category=sub_category,
                 sub_cat_size=size,
                 sub_cat_gender=gender,
-                sub_cat_homo = homozygous,
-                sub_cat_albino = albino,
-                sub_cat_melanoid = melanoid,
-                sub_cat_leucistic = leucistic,
-                sub_cat_wild = wild,
-                sub_cat_heter = heterozygous,
+                flour = flour,
+                homo = homo,
+                hetero = hetro,
                 stock=stock,
                 unit_price=unit_price,
                 visibility=visibility,
@@ -357,17 +399,21 @@ def add_post():
 
             print(filename.split(".")[1])
 
-            if str(filename.split(".")[1]) not in Allowed or str(filename2.split(".")[1]) not in Allowed or str(filename3.split(".")[1]) not in Allowed :
+            try:
+                if str(filename.split(".")[1]) not in Allowed or str(filename2.split(".")[1]) not in Allowed or str(filename3.split(".")[1]) not in Allowed :
 
-                flash(
-                    "Our website does not support that type of extension, Please update your Product Image"
-                )
+                    flash(
+                        "Our website does not support that type of extension, Please update your Product Image"
+                    )
+            except:
+                pass
 
-                return redirect("/add_post")
             file.save(os.path.join(Upload_dir, filename))
-            print(file)
-            file2.save(os.path.join(Upload_dir, filename2))
-            file3.save(os.path.join(Upload_dir, filename3))
+
+            if file2:
+                file2.save(os.path.join(Upload_dir, filename2))
+            if file3:
+                file3.save(os.path.join(Upload_dir, filename3))
             db.session.add(data)
             db.session.commit()
             return redirect("/add_post")
@@ -445,46 +491,74 @@ def filter():
     size = request.form.get('size')
     gender = request.form.get('gender')
     homo = request.form.get('homo')
-    albino = request.form.get('albino')
-    melanoid = request.form.get('melanoid')
-    leucistic = request.form.get('leucistic')
-    wild = request.form.get('wild')
+    flour = request.form.get('flour')
     heter = request.form.get('heter')
 
+    all_id = []
+    # flour
+    # homo  hetero
+    query_data = Products.query.all()
 
+    for data in query_data:
+        try:
+            if heter in data.hetero.split(","):
+                all_id.append(data.id)
+        except:
+            pass
+
+        try:
+            if homo in data.homo.split(","):
+                all_id.append(data.id)
+        except:
+            pass
+
+        try:
+            if flour in data.flour.split(","):
+                all_id.append(data.id)
+        except:
+            pass
+
+
+
+    print(all_id)
+    print()
+    print()
     row_per_page = 10
     page = request.args.get("page", 1, type=int)
 
-    query = ""
-    if albino == "" and melanoid == "" and leucistic == "":
-        print('wild is running')
-        print(wild)
-        product = Products.query.filter_by(sub_cat_size=size,sub_cat_gender=gender,sub_cat_homo=homo,sub_cat_wild=wild).paginate(
-        page=page, per_page=row_per_page)
-        print(query)
-        for data in query:
-            print(data)
-    if melanoid == "" and leucistic == "" and wild == "":
-        print("albino is running")
-        print(albino)
-        product = Products.query.filter_by(sub_cat_size=size,sub_cat_gender=gender,sub_cat_homo=homo,sub_cat_albino = albino).paginate(
+    product = Products.query.filter(Products.id.in_(all_id)).filter_by(sub_cat_size=size,sub_cat_gender=gender).paginate(
         page=page, per_page=row_per_page)
 
-    if albino == "" and leucistic == "" and wild == "":
-        print("melanoid is running")
-        print(melanoid)
-        product = Products.query.filter_by(sub_cat_size=size,sub_cat_gender=gender,sub_cat_homo=homo,sub_cat_melanoid = melanoid).paginate(
-        page=page, per_page=row_per_page)
-
-    if melanoid == "" and albino == "" and wild == "":
-        print("leucistic is running")
-        print(leucistic)
-        product = Products.query.filter_by(sub_cat_size=size,sub_cat_gender=gender,sub_cat_homo=homo,sub_cat_leucistic = leucistic).paginate(
-        page=page, per_page=row_per_page)
-
-
-
-    print("size =",size,",","gender=",gender,",","homo=",homo,",","albino=",albino,",","melanoid=",melanoid,",","leucistic=",leucistic,",","wild=",wild,",","heter=",heter,",")
+    # query = ""
+    # if albino == "" and melanoid == "" and leucistic == "":
+    #     print('wild is running')
+    #     print(wild)
+    #     product = Products.query.filter_by(sub_cat_size=size,sub_cat_gender=gender,sub_cat_homo=homo,sub_cat_wild=wild).paginate(
+    #     page=page, per_page=row_per_page)
+    #     print(query)
+    #     for data in query:
+    #         print(data)
+    # if melanoid == "" and leucistic == "" and wild == "":
+    #     print("albino is running")
+    #     print(albino)
+    #     product = Products.query.filter_by(sub_cat_size=size,sub_cat_gender=gender,sub_cat_homo=homo,sub_cat_albino = albino).paginate(
+    #     page=page, per_page=row_per_page)
+    #
+    # if albino == "" and leucistic == "" and wild == "":
+    #     print("melanoid is running")
+    #     print(melanoid)
+    #     product = Products.query.filter_by(sub_cat_size=size,sub_cat_gender=gender,sub_cat_homo=homo,sub_cat_melanoid = melanoid).paginate(
+    #     page=page, per_page=row_per_page)
+    #
+    # if melanoid == "" and albino == "" and wild == "":
+    #     print("leucistic is running")
+    #     print(leucistic)
+    #     product = Products.query.filter_by(sub_cat_size=size,sub_cat_gender=gender,sub_cat_homo=homo,sub_cat_leucistic = leucistic).paginate(
+    #     page=page, per_page=row_per_page)
+    #
+    #
+    #
+    # print("size =",size,",","gender=",gender,",","homo=",homo,",","albino=",albino,",","melanoid=",melanoid,",","leucistic=",leucistic,",","wild=",wild,",","heter=",heter,",")
     try:
         cart_data = session["SHOP"]
     except:
@@ -854,6 +928,8 @@ def history():
         return redirect("/login")
     row_per_page = 10
     page = request.args.get("page", 1, type=int)
+
+
     order = Orders.query.order_by(Orders.created.desc()).paginate(
         page=page, per_page=row_per_page
     )
@@ -932,6 +1008,26 @@ def user_logout():
     logout_user()
     return redirect("/")
 
+
+@app.route("/testing")
+def testing():
+    data = Products.query.all()
+
+    searable = []
+    for data in data:
+        if data.name == "abc":
+            searable.append(data.id)
+
+
+
+    print(searable)
+    # session.query(Record).filter(Record.id.in_(seq)).all()
+    data = Products.query.filter(Products.id.in_(searable)).filter_by(sub_cat_size="7+").paginate(page=1, per_page=2)
+    print(data)
+    for data in data:
+        print(data)
+
+    return "done"
 
 # Press the green button in the gutter to run the script.
 if __name__ == "__main__":

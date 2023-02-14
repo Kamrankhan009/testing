@@ -139,7 +139,17 @@
 
 </div>
 
+<div class="row">
+<div class="col-3 col-sm-3">
+  <select class="mdb-select md-form colorful-select dropdown-primary" data-val="true"
+    data-val-required="The RoleID field is required." id="gender" name="flour">
+      <option value="">Select Flourescence</option>
+                        <option>GFP</option>
+                        <option>RFP</option>
+  </select>
 
+</div>
+</div>
 <br><br>
 
     <div class="row">
@@ -148,14 +158,12 @@
   <select class="mdb-select md-form colorful-select dropdown-primary"  id="homo" name="homo"    >
 
       <option value="">Select Homozygous Traits</option>
-                        <option value="GFP">GFP</option>
-                        <option value="RFP">RFP</option>
-                        <option value="Albino">Albino</option>
-                        <option value="Copper">Copper</option>
-                        <option value="Melanoid">Melanoid</option>
-                        <option value="Axanthic">Axanthic</option>
-                        <option value="Leucistic">Leucistic</option>
-                        <option value="Wild">Wild</option>
+                       <option value="Leucistic">Leucistic</option>
+                       <option value="Melanoid">Melanoid</option>
+                       <option value="Hypomelanistic">Hypomelanistic</option>
+                       <option value="Albino">Albino</option>
+                       <option value="Copper">Copper</option>
+                       <option value="Axanthic">Axanthic</option>
   </select>
 
 
@@ -163,26 +171,26 @@
         $(document).ready(function(){
             $('#homo').on("change", function(){
             console.log("hello testing");
-            if ($('#homo').val() == "Albino"){
+            if ($('#homo').val() == "Albinoo"){
             document.getElementById('albino').style.display = "block";
             document.getElementById('melanoid').style.display = "none";
             document.getElementById('leucistic').style.display = "none";
             document.getElementById('wild').style.display = "none";
             }
-            else if($('#homo').val() == "Melanoid"){
+            else if($('#homo').val() == "Melanoids"){
             document.getElementById('albino').style.display = "none";
             document.getElementById('leucistic').style.display = "none";
             document.getElementById('wild').style.display = "none";
             document.getElementById('melanoid').style.display = "block";
             }
-            else if($('#homo').val() == "Leucistic") {
+            else if($('#homo').val() == "Leucistics") {
 
             document.getElementById('albino').style.display = "none";
             document.getElementById('melanoid').style.display = "none";
             document.getElementById('leucistic').style.display = "block";
             document.getElementById('wild').style.display = "none";
             }
-            else if($('#homo').val() == "Wild"){
+            else if($('#homo').val() == "Wilds"){
             document.getElementById('albino').style.display = "none";
             document.getElementById('melanoid').style.display = "none";
             document.getElementById('leucistic').style.display = "none";
@@ -279,10 +287,12 @@
                 <div class="col-2">
   <select class="mdb-select md-form colorful-select dropdown-primary"  id="heter" name="heter">
        <option value="">Select Heterozygous Traits</option>
-                        <option>Albino</option>
-                        <option>Copper</option>
-                        <option>Melanoid</option>
-                        <option>Leucistic</option>
+                       <option value="Leucistic">Leucistic</option>
+                       <option value="Melanoid">Melanoid</option>
+                       <option value="Hypomelanistic">Hypomelanistic</option>
+                       <option value="Albino">Albino</option>
+                       <option value="Copper">Copper</option>
+                       <option value="Axanthic">Axanthic</option>
   </select>
         </div>
 
@@ -640,7 +650,7 @@ if( elementClicked != true ) {
                                    <div class="col-lg-12">
                               <!-- Pagination Links-->
             <div class="text-center">
-               <a href="{{ url_for('Home', page=product.prev_num) }}"
+               <a href="{{ url_for('shop', page=product.prev_num) }}"
                   class="btn
                   {% if product.page == 1 %}disabled{% endif %}" style="color:white; background-color:black;">
                    &laquo;
@@ -650,12 +660,12 @@ if( elementClicked != true ) {
             {% if page_num %}
 
                        {% if product.page == page_num %}
-                       <a href="{{ url_for('Home', page=page_num) }}"
+                       <a href="{{ url_for('shop', page=page_num) }}"
                           class="btn" style="color:white; background-color:black;">
                            {{ page_num }}
                        </a>
                        {% else %}
-                       <a href="{{ url_for('Home', page=page_num) }}"
+                       <a href="{{ url_for('shop', page=page_num) }}"
                           class="btn" style="color:white; background-color:black;">
                            {{ page_num }}
                        </a>
@@ -664,7 +674,7 @@ if( elementClicked != true ) {
                        ...
                    {% endif %}
                {% endfor %}
-               <a href="{{ url_for('Home', page=product.next_num) }}"
+               <a href="{{ url_for('shop', page=product.next_num) }}"
                   class="btn
                   {% if product.page == product.pages %}disabled{% endif %}" style="color:white; background-color:black;">
                    &raquo;

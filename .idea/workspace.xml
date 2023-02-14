@@ -8,15 +8,9 @@
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/instance/database.sqlite" beforeDir="false" afterPath="$PROJECT_DIR$/instance/database.sqlite" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/base.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/base.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/care_guide.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/care_guide.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/images/DSC05023_1_-2.webp" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/templates/dashboard/pages/tables.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/dashboard/pages/tables.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/gallery.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/gallery.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/glossary.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/glossary.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/shop-details.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/shop-details.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/templates/shop.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/shop.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/shopping-cart.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/shopping-cart.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -27,6 +21,7 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="HTML File" />
+        <option value="Python Script" />
       </list>
     </option>
   </component>
