@@ -497,8 +497,12 @@ def filter():
     all_id = []
     # flour
     # homo  hetero
+    # Melanoid
+    # Leucistic
+
     query_data = Products.query.all()
 
+    flr = []
     for data in query_data:
         try:
             if heter in data.hetero.split(","):
@@ -508,25 +512,31 @@ def filter():
 
         try:
             if homo in data.homo.split(","):
+                if heter != "Melanoid" and heter != "Leucistic":
+                    if homo == "Melanoid":
+                        if "Leucistic" in data.homo.split(","):
+                            all_id.append(data.id)
+                    if homo == "Leucistic":
+                        if "Melanoid" in data.homo.split(","):
+                            all_id.append(data.id)
                 all_id.append(data.id)
         except:
             pass
 
         try:
             if flour in data.flour.split(","):
-                all_id.append(data.id)
+                flr.append(data.id)
         except:
             pass
 
 
 
-    print(all_id)
-    print()
-    print()
+
+    all_id = list(dict.fromkeys(all_id))
+    flr = list(dict.fromkeys(flr))
     row_per_page = 10
     page = request.args.get("page", 1, type=int)
-
-    product = Products.query.filter(Products.id.in_(all_id)).filter_by(sub_cat_size=size,sub_cat_gender=gender).paginate(
+    product = Products.query.filter(Products.id.in_(all_id)).filter(Products.id.in_(flr)).filter_by(sub_cat_size=size,sub_cat_gender=gender).paginate(
         page=page, per_page=row_per_page)
 
     # query = ""
