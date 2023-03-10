@@ -67,6 +67,21 @@ a:focus {
 	outline: none;
 	color: #ffffff;
 }
+a.inline {
+    color: #3d3d3d;
+    text-decoration: underline;
+}
+
+.my-list {
+	padding: 20px;
+	font-size: 15px;
+	font-family: "Nunito Sans", sans-serif;
+	color: #3d3d3d;
+	font-weight: 400;
+	line-height: 25px;
+	/* add any other styling you want for the list items */
+  }
+  
 
 ul,
 ol {
