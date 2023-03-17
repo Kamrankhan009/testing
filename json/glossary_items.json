@@ -38,6 +38,21 @@
         "word": "Chromatophore",
         "italics_section": "Cells that produce pigment",
         "regular_section": "Chromatophores form along the neural crest (spinal column) then migrate around the body. This migration is why babies of most axolotl morphs have white bellies. The three chromataphores that influence axolotl coloration are: Melanophores (contain dark eumelanin, which is converted from pheomelanin), Xanthophores (contain yellow/orange pteradines), and Iridiphores (crystaline plates made of guanine that diffract and reflect light)"
+    },
+    {
+        "word": "Nitrogen Cycle",
+        "italics_section": "Poop -> Ammonia -> Nitrite -> Nitrate",
+        "regular_section": "When an aquatic animal poops, it produces ammonia, NH3. NH3 is poisonous to aquatic animals, and given amphibian's permiable skin and flowy gills, they are especially at risk, so the levels of this chemical must be 0. Luckily there is a type of beneficial bacteria (BB) that you can grow in your filter or substrate to convert NH3 to Nitrites, NO2-. You may be thinking \"that's great, now there's no ammonia and my axolotl is safe!\" but NO2- is also somewhat toxic and its levels must be 0 in your tank as well. That calls for yet another culture of BB, bacteria that turns NO2- into Nitrates, NO3-, which is indeed much less harmful if kept below about 20 ppm. This NO3- is then removed with less urgency, mostly by water changes but in smaller amounts by live plants"
+    },
+    {
+        "word": "Axolotl",
+        "italics_section": "From Nauhatl, Atl meaning Water and Xolotl in reference to the dog-headed diety of fire, lightning, twins, monsters, misfortune, sickness, and deformities",
+        "regular_section": "These fascinating creatures are sometimes refered to as \"Mexican Walking Fish\" even though they are salamanders. Contrary to the Nauhatl etymology, these differ from the other salamnder species english speakers call \"water dogs\". This entire site is dedicated to these creatures, so click and scroll around to learn all about them!"
+    },
+    {
+        "word": "Water Quality",
+        "italics_section": "The parameters of various chemicals within the aquarium",
+        "regular_section": "The quality of aquarium water is determined by the levels of Ammonia, Nitrite, and Nitrate, as well as the pH, kH, and gH. There exist several testing kits that you can purchase to make sure your pet has the healthiest home. (We recommend API tests, the ones with droplets rather than dip-strips)"
     }
   ]
   
