@@ -1,3 +1,4 @@
+import json
 from email.policy import default
 from flask import Flask, render_template, request, redirect, flash, url_for, session
 from flask_sqlalchemy import SQLAlchemy
@@ -995,7 +996,11 @@ def Glossary():
         cart_data = session["SHOP"]
     except:
         cart_data = {}
-    return render_template("glossary.html", cart_data= cart_data)
+
+    with open('json/glossary_items.json') as f:
+        glossary_items = json.load(f)
+        
+    return render_template("glossary.html", cart_data= cart_data, glossary_items=glossary_items)
 
 @app.route("/contact")
 def contact():
