@@ -56,6 +56,7 @@
                         <a href="/logout" style="color:black; hover:black;">logout</a>
                         <a href="{{url_for('admin_dashboard')}}" style="color:black; hover:black;">Dashboard</a>
                         {%else%}
+                        <a href="{{url_for('order_profile')}}" style="color:black; hover:black;">Orders</a>
                         <a href="/logout" style="color:black; hover:black;">logout</a>
                         {%endif%}
                         {%else%}
@@ -131,6 +132,7 @@
                         <a href="/logout" style="color:black; hover:black;">logout</a>
                         <a href="{{url_for('admin_dashboard')}}" style="color:black; hover:black;">Dashboard</a>
                         {%else%}
+                        <a href="{{url_for('order_profile')}}" style="color:black; hover:black;">Orders</a>
                         <a href="/logout" style="color:black; hover:black;">logout</a>
                         {%endif%}
                         {%else%}

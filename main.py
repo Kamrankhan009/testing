@@ -1,4 +1,3 @@
-from email.policy import default
 from flask import Flask, render_template, request, redirect, flash, url_for, session
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
@@ -24,6 +23,7 @@ import auth
 from flask_cors import CORS
 from flask_admin.contrib.sqla import ModelView
 from flask_admin import Admin
+import stripe
 
 app = Flask(__name__)
 app.config[
@@ -33,10 +33,11 @@ app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///database.sqlite"
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 app.config["SESSION_PERMANENT"] = True
 app.config["SESSION_TYPE"] = "filesystem"
+app.config['STRIPE_PUBLIC_KEY'] = 'pk_test_51Maq2FIcCIyr3xbcANbSwtE2B3SQb6WRwXWIGv8HcIwVdCAzdsuj70G3kyMCx95j2qFc3bMU0O724stq92HefEBs00xbmO8BsL'
+app.config['STRIPE_SECRET_KEY'] = 'sk_test_51Maq2FIcCIyr3xbc7Pf7DIQFupgbmsgp4FlZOrec4Byg6qaulgLlFiJ6nckQwRnTVDdUS2nKKLNDv2NpGbQUI5XT00XeggezUz'
 
 
-
-
+stripe.api_key =  app.config['STRIPE_SECRET_KEY']
 db = SQLAlchemy(app)
 Migrate(app, db)
 CORS(app)
@@ -68,7 +69,6 @@ class User(db.Model, UserMixin):
     password = db.Column(db.String(100))
     role = db.Column(db.String(100), default="user")
     product = db.relationship("Orders", backref="user", lazy=True)
-    rating = db.relationship("Ratings", backref="user", lazy=True)
     visibility = db.Column(db.String(255), default="True")
 
 
@@ -98,7 +98,7 @@ class Products(db.Model):
         db.Integer, db.ForeignKey("user.id", ondelete="CASCADE"), nullable=False
     )
     orderitems = db.relationship("OrderItems", backref="products", lazy=True)
-    rating = db.relationship("Ratings", backref="products", lazy=True)
+
     tags = db.Column(db.String(255))
 
 
@@ -111,10 +111,12 @@ class Orders(db.Model):
     )
     total_price = db.Column(db.Integer)
     address = db.Column(db.String(500))
-    payment_method = db.Column(db.String(255))
-    money_received = db.Column(db.Integer)
+    status = db.Column(db.String(255), default="Pending")
+    receipt = db.Column(db.String(255))
+    phone = db.Column(db.String(255), default="000 000 000")
     created = db.Column(db.DateTime, default=date.today())
     orderitems = db.relationship("OrderItems", backref="orders", lazy=True)
+
 
 
 # OrderItems table (id, order_id, product_id, quantity, unit_price)
@@ -132,22 +134,8 @@ class OrderItems(db.Model):
     unit_price = db.Column(db.Integer)
 
 
-# d Ratings (id, product_id, user_id, rating, comment,
-# created, modified)
-class Ratings(db.Model):
-    id = db.Column(db.Integer, primary_key=True, nullable=False)
-    product_id = db.Column(
-        db.Integer, db.ForeignKey("products.id", ondelete="CASCADE"), nullable=False
-    )
-    user_id = db.Column(
-        db.Integer, db.ForeignKey("user.id", ondelete="CASCADE"), nullable=False
-    )
-    rating = db.Column(db.Integer)
-    comment = db.Column(db.String(255))
-    created = db.Column(db.TIMESTAMP(), server_default=func.now())
-    modified = db.Column(
-        db.TIMESTAMP(), server_default=func.now(), onupdate=func.current_timestamp()
-    )
+
+
 
 
 def MergeDict(dict1, dict2):
@@ -650,7 +638,7 @@ def sub_cat(cat, sub_cat):
 def product_details(id):
     # row_per_page = 10
     # page = request.args.get('page', 1, type=int)
-    # rating = Ratings.query.filter_by(product_id=id).paginate(page = page , per_page = row_per_page)
+
     product = Products.query.filter_by(id=id).first()
     # user = User.query.all()
     return render_template("shop-details.html", product=product)
@@ -662,6 +650,7 @@ def show_cart():
         cart_data = session["SHOP"]
     except:
         cart_data = {}
+
     total_price = 0
     for key in cart_data:
         total_price += cart_data[key]["t_price"]
@@ -712,6 +701,8 @@ def cart():
         price = float(request.form.get("price"))
         id = request.form.get("product_id")
         prod_price = float(request.form.get("prod_price"))
+
+
         product = Products.query.filter_by(id=id).first()
         if car_val >= product.stock:
             if "SHOP" in session:
@@ -719,11 +710,17 @@ def cart():
                 # session['SHOP'][id]['price'] = prod_price
                 session["SHOP"][id]["t_price"] = prod_price
                 session.modified = True
+
+            cart_data = session['SHOP']
+            total_grand_price = 0
+            for key in cart_data:
+                total_grand_price += cart_data[key]["t_price"]
+
             return {
                 "val": car_val,
-                "total_price": prod_price,
+                "total_price": total_grand_price,
                 "prod_p": prod_price,
-                "grand_total": price + 5,
+                "grand_total": price,
             }
 
         car_val += 1
@@ -738,9 +735,17 @@ def cart():
             price = session["SHOP"][id]["t_price"]
             session.modified = True
 
+
+        cart_data = session['SHOP']
+        total_grand_price = 0
+        for key in cart_data:
+            total_grand_price += cart_data[key]["t_price"]
+
+
+
         return {
             "val": car_val,
-            "total_price": price,
+            "total_price": total_grand_price,
             "prod_p": prod_price,
             "grand_total": price + 5,
         }
@@ -761,11 +766,16 @@ def car_minus():
                 session["SHOP"][id]["quantity"] = 1
                 session["SHOP"][id]["price"] = prod_price
                 session.modified = True
+
+            cart_data = session['SHOP']
+            total_grand_price = 0
+            for key in cart_data:
+                total_grand_price += cart_data[key]["t_price"]
             return {
                 "val": 1,
-                "total_price": price,
+                "total_price": total_grand_price,
                 "prod_p": prod_price,
-                "grand_total": price + 5,
+                "grand_total": price,
             }
         price -= product.unit_price
         prod_price -= product.unit_price
@@ -775,11 +785,16 @@ def car_minus():
             price = session["SHOP"][id]["t_price"]
             session.modified = True
 
+        cart_data = session['SHOP']
+        total_grand_price = 0
+        for key in cart_data:
+            total_grand_price += cart_data[key]["t_price"]
+
         return {
             "val": car_val,
-            "total_price": float(price),
+            "total_price": total_grand_price,
             "prod_p": prod_price,
-            "grand_total": price + 5,
+            "grand_total": price,
         }
 
 
@@ -791,64 +806,35 @@ def delete_session_item(key):
     return redirect("/show_cart")
 
 
-@app.route("/checkout", methods=["GET", "POST"])
+@app.route("/checkout", methods=["GET"])
 @login_required
 def checkout():
     try:
         product = session["SHOP"]
     except:
         product = {}
-    total_price = 0
+
+    total_price = 0.0
     for key in product:
-        total_price += product[key]["price"]
+        total_price += product[key]["t_price"]
 
-    if request.method == "POST":
-        total_price = 0
-        if "SHOP" in session:
-            for key in session["SHOP"]:
-                total_price += session["SHOP"][key]["price"]
-        # cash, paymentMethod,zip,state,country, address2, address, email, name
-        name = request.form["first_name"]
-        email = request.form["email"]
-        address = request.form["address"]
-        address2 = request.form["address2"]
-        country = request.form["country"]
-        state = request.form["state"]
-        zip = request.form["zip"]
+    print(product)
+    return render_template("checkout.html", product=product, total_price=total_price, app = app)
 
-        complete_address = (
-            address + " " + address2 + " " + country + " " + state + " " + zip
-        )
-        data = Orders(
-            user_id=current_user.id, total_price=total_price, address=complete_address
-        )
-        db.session.add(data)
-        db.session.commit()
-        db.session.refresh(data)
+@app.route("/order_profile")
+def order_profile():
+    orders = db.session.query(Orders, OrderItems, Products).join(OrderItems, Orders.id == OrderItems.order_id).join(
+        Products, OrderItems.product_id == Products.id).filter(Orders.user_id == current_user.id).all()
 
-        # DictItems = {product_id:{"name":product.name, "price":product.unit_price, "description":product.description, "image":product.image, "quantity":1}}
-        # if 'SHOP' in session:
-        #     product = session['SHOP']
-        for value in product:
-            Items = OrderItems(
-                order_id=data.id,
-                product_id=value,
-                quantity=product[value]["quantity"],
-                unit_price=product[value]["price"],
-            )
-            db.session.add(Items)
-            db.session.commit()
+    print(orders)
 
-        for value in product:
-            print()
-            P_data = Products.query.filter_by(id=value).first()
-            P_data.stock -= product[value]["quantity"]
-            db.session.commit()
+    total_amount = 0
+    amount = Orders.query.filter_by(user_id = current_user.id).all()
+    for data in amount:
+        total_amount += data.total_price
 
-        session.pop("SHOP", None)
-        session.modified = True
-        return redirect("/confirmation/" + str(data.id))
-    return render_template("checkout.html", product=product, total_price=total_price)
+
+    return render_template("profile.html" , order = orders, total_amount = total_amount, app = app)
 
 
 @app.route("/confirmation/<id>")
@@ -858,18 +844,26 @@ def confirmation(id):
         print(session["SHOP"])
     except Exception as e:
         print(e)
+
     order = (
         db.session.query(OrderItems, Products)
         .join(Products, OrderItems.product_id == Products.id, isouter=True)
         .filter(OrderItems.order_id == id)
         .all()
     )
-    print(type(order))
+
+    orders = db.session.query(Orders, OrderItems, Products).join(OrderItems, Orders.id == OrderItems.order_id).join(Products, OrderItems.product_id == Products.id ).filter(Orders.user_id == current_user.id).all()
+
+    for value in orders:
+        print(value)
+
     total_price = 0
     for r in order:
         print(r[1].name, r[0].quantity, r[0].unit_price, r[1].image)
         total_price += r[0].unit_price
     data = Orders.query.filter_by(id=id).first()
+    # session.pop("SHOP", None)
+    # session.modified = True
     return render_template(
         "order_confirmation.html", order=order, data=data, total_price=total_price
     )
@@ -1019,6 +1013,81 @@ def user_logout():
     return redirect("/")
 
 
+@app.route("/check_out_complete")
+def checkout_complete():
+    return render_template('payment.html', app = app)
+
+
+@app.route('/charge', methods=['POST'])
+def charge():
+    # Amount in cents
+    amount = int(float(request.form['price']))
+    print(amount)
+    name = request.form['first_name']
+    email = request.form['email']
+    address = request.form['address']
+    address2 = request.form['address2']
+    Phone = request.form['state']
+    complete_address = address + " " + address2
+    order = Orders.query.filter_by(user_id = current_user.id, id=7).first()
+
+    try:
+        product = session['SHOP']
+
+        try:
+            customer = stripe.Customer.create(
+                email=request.form['stripeEmail'],
+                source=request.form['stripeToken'],
+            )
+
+            charge = stripe.Charge.create(
+                customer=customer.id,
+                amount=amount,
+                currency='usd',
+                description='Axolotl Payement'
+            )
+            url = charge.receipt_url
+        except Exception as e:
+            flash(f"An error occurred: {str(e)}", "error")
+            return  redirect(url_for("checkout"))
+
+        data = Orders(
+            user_id = current_user.id,
+            total_price = amount,
+            address = complete_address,
+            phone = Phone,
+            receipt = url
+        )
+        db.session.add(data)
+        db.session.commit()
+        db.session.refresh(data)
+
+
+
+        for value in product:
+            Items = OrderItems(
+                order_id = data.id,
+                product_id = value,
+                quantity = product[value]['quantity'],
+                unit_price = product[value]['price']
+            )
+            db.session.add(Items)
+            db.session.commit()
+
+        for value in product:
+            print()
+            P_data = Products.query.filter_by(id = value).first()
+            P_data = Products.query.filter_by(id = value).first()
+            P_data.stock -= product[value]['quantity']
+            db.session.commit()
+
+        session.pop('SHOP', None)
+        session.modified = True
+        return render_template('charge.html', amount=amount, url = url)
+    except Exception as e:
+        flash(f" Transaction failed. Please try again.{e}")
+        return redirect(url_for("checkout"))
+
 @app.route("/testing")
 def testing():
     data = Products.query.all()
@@ -1038,6 +1107,8 @@ def testing():
         print(data)
 
     return "done"
+
+
 
 # Press the green button in the gutter to run the script.
 if __name__ == "__main__":

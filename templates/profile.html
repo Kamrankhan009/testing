@@ -1,0 +1,115 @@
+{%extends 'base.html' %}
+{% block content %}
+
+<br>
+<style>
+table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+th, td {
+  text-align: left;
+  padding: 8px;
+}
+
+th {
+ background-color:black;
+ color:white;
+}
+
+<!--tr:nth-child(even) {background-color: #f2f2f2;-->
+
+}
+</style>
+
+
+<h2 style="margin:5% 45% 5% 45%; border-bottom:2px solid green;">Orders</h2>
+
+{% set order_ids = namespace(order_id=0) %}
+{% set order_number = namespace(order_num =0) %}
+<div style="overflow-x: auto; margin-left:5%; margin-right:5%;">
+  <table>
+{% for order in order %}
+
+
+{% if order_ids.order_id != order[0].id %}
+{% set order_ids.order_id = order[0].id %}
+
+    <tr>
+      <th>Order ID</th>
+        <th>Receipt</th>
+
+      <th>Product Name</th>
+      <th>Product quantity</th>
+      <th>Unit Price</th>
+      <th>total Price Per product</th>
+        <th>Image</th>
+    </tr>
+
+    {%endif%}
+{% if order_ids.order_id == order[0].id%}
+
+    <tr>
+
+      {% if order_number.order_num != order[0].id%}
+        {% set order_number.order_num = order[0].id %}
+        <td>
+          #{{order[0].id}}
+    </td>
+          <td>
+          <a href="{{order[0].receipt}}" style="color:red">View Receipt</a>
+    </td>
+
+        {%else%}
+        <td></td>
+        <td></td>
+          {%endif%}
+
+
+
+      <td>{{order[2].name}}</td>
+      <td>{{order[1].quantity}}</td>
+      <td>{{order[1].unit_price}}</td>
+      <td>{{order[1].quantity * order[1].unit_price}}</td>
+        <td ><img style="border-radius:30px" width="50px" height="50px" src={{url_for("static", filename="images/")}}{{order[2].image}}></td>
+
+    </tr>
+
+
+
+</div>
+
+{%endif%}
+
+{%endfor%}
+</table>
+<br><br>
+
+<style>
+		.containers {
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+
+		}
+
+		h3 {
+			margin: 0;
+		}
+
+		.buttons {
+			background-color: #007bff;
+			color: #fff;
+			border: none;
+			padding: 10px 20px;
+			border-radius: 5px;
+			cursor: pointer;
+		}
+	</style>
+
+
+<br><br><br><br><br>
+
+{%endblock%}
+

@@ -1,0 +1,31 @@
+{%extends 'base.html' %}
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Thank You for Your Payment</title>
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+s</head>
+<body>
+  <div class="container mt-5">
+    <div class="row justify-content-center">
+      <div class="col-md-6 text-center">
+        <i class="fas fa-check-circle fa-5x text-success"></i>
+        <h2 class="mt-3">Thank You for Your Payment!</h2>
+        <p class="lead">Your payment of ${{amount/100}} has been successfully processed.</p>
+        <p>Transaction Receipt:<a href="{{url}}">..Receipt..</a></p>
+      </div>
+    </div>
+
+  </div>
+
+  <br><br><br><br>
+  <!-- Bootstrap JS -->
+  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+</body>
+</html>
+{%endblock%}
