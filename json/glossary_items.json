@@ -1,0 +1,59 @@
+[
+    {
+        "word": "Morph",
+        "bold_italics_section": "As a noun",
+        "italics_section": "In biology, an individual of one particular form in a species that occurs in two or more forms",
+        "regular_section": "Perhaps the most internet-famous axolotl morph is the leucistic or white axolotl, these have white skin, pink fluffy gills, and dark eyes. Other morphs include albino (white with white eyes), Golden Albino (albinos with high iridiophore content), Melanoid or dark, Copper, Axanthic, various combinations of these. There are even chimeras and mosaics!",
+        "bold_italics_section_2": "As a verb",
+        "italics_section_2": "To undergo metamorphasis",
+        "regular_section_2": "As stated earlier, this is not something that axolotls are wont to do. Captive axolotls are cross-bred with tiger salamanders (who do undergo metamorphasis) and so occasionally a pet axolotl will morph. Captive axolotls are also more likely to encounter iodine, which is used to produce thyroxin, which causes morphing.",
+        "image_alt": "A cute illustration of lotl morphs",
+        "image_filename": "cute_morphs.jpg",
+        "image_alt_2": "Axolotl before and after morphing",
+        "image_filename_2": "lotl_before_after_morphing.png"
+    },
+    {
+        "word": "Suction Feeder",
+        "italics_section": "A creature that captures prey by generating a flow of water into a rapidly expanding mouth cavity",
+        "regular_section": "like kirby but faster and for gaining nutrients rather than abilities. Gif is slowed down, but still looks instantaneous!",
+        "image_alt": "an axolotl swallowing a worm slowed down",
+        "image_filename": "suction.gif"
+    },
+    {
+        "word": "Chinampa",
+        "bold_italics_section": "From Nahuatl \"chinamitl\"",
+        "italics_section": "meaning a fence/square of canes/reeds",
+        "regular_section": "A floating garden; a Mesoamerican agricultural technique where crops were grown in the shallows of lake beds."
+    },
+    {
+        "word": "Neotenic",
+        "italics_section": "The retention of juvinile characteristics in the adults of a species",
+        "regular_section": "For axolotls this means they don't lose their gills or dorsal fins like other salamanders. They live, breed, and die, fully aquatic!"
+    },
+    {
+        "word": "Impaction",
+        "regular_section": "Basically constipation, but with the risk of death. Many axolotls have been autopsied and found to be filled with rocks, large sand, and other obstructions from their environment. That is why axolotls under 6 inches should have bare bottom enclosures. Bare bottom enclosures for full sized adults are still recommended; but tile, fine sand, or rocks that are glued down are also acceptable"
+    },
+    {
+        "word": "Chromatophore",
+        "italics_section": "Cells that produce pigment",
+        "regular_section": "Chromatophores form along the neural crest (spinal column) then migrate around the body. This migration is why babies of most axolotl morphs have white bellies. The three chromataphores that influence axolotl coloration are: Melanophores (contain dark eumelanin, which is converted from pheomelanin), Xanthophores (contain yellow/orange pteradines), and Iridiphores (crystaline plates made of guanine that diffract and reflect light)"
+    },
+    {
+        "word": "Nitrogen Cycle",
+        "italics_section": "Poop -> Ammonia -> Nitrite -> Nitrate",
+        "regular_section": "When an aquatic animal poops, it produces ammonia, NH3. NH3 is poisonous to aquatic animals, and given amphibian's permiable skin and flowy gills, they are especially at risk, so the levels of this chemical must be 0. Luckily there is a type of beneficial bacteria (BB) that you can grow in your filter or substrate to convert NH3 to Nitrites, NO2-. You may be thinking \"that's great, now there's no ammonia and my axolotl is safe!\" but NO2- is also somewhat toxic and its levels must be 0 in your tank as well. That calls for yet another culture of BB, bacteria that turns NO2- into Nitrates, NO3-, which is indeed much less harmful if kept below about 20 ppm. This NO3- is then removed with less urgency, mostly by water changes but in smaller amounts by live plants"
+    },
+    {
+        "word": "Axolotl",
+        "bold_italics_section": "From Nauhatl Atl + Xolotl",
+        "italics_section": "Atl meaning Water and Xolotl in reference to the dog-headed diety of fire, lightning, twins, monsters, misfortune, sickness, and deformities",
+        "regular_section": "These fascinating creatures are sometimes refered to as \"Mexican Walking Fish\" even though they are salamanders. Contrary to the Nauhatl etymology, axolotls differ from the other salamander species english speakers call \"water dogs\". This entire site is dedicated to these creatures, so click and scroll around to learn all about them!"
+    },
+    {
+        "word": "Water Quality",
+        "italics_section": "The parameters of various chemicals within the aquarium",
+        "regular_section": "The quality of aquarium water is determined by the levels of Ammonia, Nitrite, and Nitrate, as well as the pH, kH, and gH. There exist several testing kits that you can purchase to make sure your pet has the healthiest home. (We recommend API tests, the ones with droplets rather than dip-strips)"
+    }
+  ]
+  
