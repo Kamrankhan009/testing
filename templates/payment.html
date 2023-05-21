@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>payement</title>
+</head>
+<body>
+
+<form action="/charge" method="POST">
+  <script src="https://checkout.stripe.com/checkout.js" class="stripe-button"
+          data-key="{{ app.config['STRIPE_PUBLIC_KEY'] }}"
+          data-amount="30000"
+          data-name="Demo Site"
+          data-description="Widget"
+          data-image="https://stripe.com/img/documentation/checkout/marketplace.png"
+          data-currency="usd">
+  </script>
+</form>
+
+</body>
+</html>

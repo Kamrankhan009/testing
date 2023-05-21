@@ -23,12 +23,15 @@
     <section class="checkout spad">
         <div class="container">
             <div class="checkout__form">
-                <form method="post">
+                <form method="post" action="charge" id="myform">
                     <div class="row">
                         <div class="col-lg-8 col-md-6">
 
                             <h6 class="checkout__title">Billing Details</h6>
                             <div class="row">
+                                {%for messages in get_flashed_messages() %}
+                                <p style="color:red">{{messages}}</p>
+                                {%endfor%}
                                 <div class="col-lg-12">
                                     <div class="checkout__input">
                                         <p>Name<span>*</span></p>
@@ -36,31 +39,24 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="checkout__input">
-                                <p>Country<span>*</span></p>
-                                <input type="text" name="country">
-                            </div>
+
                             <div class="checkout__input">
                                 <p>Address<span>*</span></p>
-                                <input type="text" placeholder="Street Address" class="checkout__input__add" name="address">
+                                <input type="text" placeholder="Street Address" class="checkout__input__add" name="address" required>
                                 <input type="text" placeholder="Apartment, suite, unite ect (optinal)" name="address2">
                             </div>
 
                             <div class="checkout__input">
-                                <p>State<span>*</span></p>
-                                <input type="text" name="state">
+                                <p>Phone<span>*</span></p>
+                                <input type="text" name="state" required>
                             </div>
 
-                            <div class="checkout__input">
-                                <p>Postcode / ZIP<span>*</span></p>
-                                <input type="text" name="zip">
-                            </div>
                             <div class="row">
 
                                 <div class="col-lg-12">
                                     <div class="checkout__input">
                                         <p>Email<span>*</span></p>
-                                        <input type="text"  name="email" value="{{current_user.email}}">
+                                        <input type="text"  name="email" value="{{current_user.email}}" required>
                                     </div>
                                 </div>
                             </div>
@@ -74,7 +70,7 @@
                                 <div class="checkout__order__products">Product <span>Total</span></div>
                                 <ul class="checkout__total__products">
                                      {% for key in product %}
-                                    <li>{{loop.index}} {{product[key]['name']}} ({{product[key]['quantity']}}) <span>$ {{product[key]['price']}}</span></li>
+                                    <li>{{loop.index}} {{product[key]['name']}} ({{product[key]['quantity']}}) <span>$ {{product[key]['t_price']}}</span></li>
                                     {%endfor%}
 
                                 </ul>
@@ -84,21 +80,48 @@
                                 </ul>
 
 
-                                <div class="checkout__input__checkbox">
-                                    <label for="payment">
-                                        Check Payment
-                                        <input type="checkbox" id="payment">
-                                        <span class="checkmark"></span>
-                                    </label>
+<!--                                <button type="submit" class="site-btn" {% if total_price > 0 %} {%else%} disabled {%endif%} >Proceed Payment</button>-->
+
+
+ {%set amount = total_price * 100 %}
+                <input type="hidden" value="{{amount}}" name="price">
+
+<div style="display:none" id="check">
+    <script src="https://checkout.stripe.com/checkout.js" class="stripe-button"
+          data-key="{{ app.config['STRIPE_PUBLIC_KEY'] }}"
+          data-amount="{{amount}}"
+          data-name="Demo Site"
+          data-description="Widget"
+          data-image="https://stripe.com/img/documentation/checkout/marketplace.png"
+          data-currency="usd">
+  </script>
+</div>
+                                <div id="no_check">
+                                    <p style="color:red">complete given form to proceed checkout</p>
                                 </div>
-                                <div class="checkout__input__checkbox">
-                                    <label for="paypal">
-                                        Paypal
-                                        <input type="checkbox" id="paypal">
-                                        <span class="checkmark"></span>
-                                    </label>
-                                </div>
-                                <button type="submit" class="site-btn">PLACE ORDER</button>
+
+
+
+                                <script>
+                                    $(document).ready(function() {
+  $("#myform").on("change", function() {
+    var form = $("#myform");
+    if (form[0].checkValidity()) {
+      $("#check").show(); // Show the result div
+      $("#no_check").hide();
+    } else {
+      $("#check").hide(); // Hide the result div if not all fields are filled
+      $("#no_check").show();
+    }
+  });
+});
+
+                                </script>
+
+
+
+
+
                             </div>
                         </div>
                     </div>
