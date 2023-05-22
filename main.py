@@ -1,8 +1,5 @@
-<<<<<<< HEAD
-=======
+
 import json
-from email.policy import default
->>>>>>> 82ad35d4209be7e8a9bd02e8575811f8a6b5d34f
 from flask import Flask, render_template, request, redirect, flash, url_for, session
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
